@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0 text-dark"><i class="nav-icon fas fa-globe-americas"></i> Categorías</h1>
+        <h1 class="m-0 text-dark"><i class="nav-icon fas fa-tag"></i> Categorías</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -24,7 +24,7 @@
       <div class="col-12">
         <div class="card card-primary card-outline card-tabs">
           <div class="card-header">
-            <h3 class="card-title"><i class="nav-icon fas fa-globe-americas"></i> Categorías registradas</h3>
+            <h3 class="card-title"><i class="nav-icon fas fa-tag"></i> Categorías registradas</h3>
             <div class="card-tools">
               @if(search_permits('Categorias','Imprimir PDF')=="Si" || search_permits('Categorias','Imprimir Excel')=="Si")
               <div class="btn-group">

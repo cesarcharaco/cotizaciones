@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>StreamingSystem | @yield('title')</title>
+    <title>Sistema De Cotizaciones | @yield('title')</title>
     @include('layouts.css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

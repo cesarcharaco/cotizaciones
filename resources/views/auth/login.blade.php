@@ -6,7 +6,7 @@
     <div class="card card-outline card-primary">
         <div class="card-header text-center">
             <!--<a href="{!! route('login') !!}" class="h2"> <b>Spreading</b>System</a> -->
-            <img src="{{ asset('img/inicio.png')}}">
+            <img src="{{ asset('img/inicio.png')}}" width="90%" height="90%">
         </div>
         <div class="card-body">
             <p class="login-box-msg">Inicio de sesión</p>

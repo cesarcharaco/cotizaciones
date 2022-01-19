@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use Alert;
 use Datatables;
 use App\Models\Imagenes;
-use App\Models\Inventario;
-use App\Models\Almacen;
 use App\Models\Categorias;
-use App\Models\Agencias;
-use App\Models\CarritoPedido;
 class ProductosController extends Controller
 {
     /**
@@ -56,8 +52,8 @@ class ProductosController extends Controller
     public function create()
     {
         $categorias=Categorias::all();
-        $agencias=Agencias::where('almacen','Si')->get();
-        return view('productos.create',compact('categorias','agencias'));
+        
+        return view('productos.create',compact('categorias'));
     }
 
     /**
@@ -98,16 +94,7 @@ class ProductosController extends Controller
             Alert::error('Alerta', 'Ya existe un producto con los mismos detalles, modelo y color.')->persistent(true);
             return redirect()->back();
         }else{
-            //validando arreglo de almacen
-            if(count($request->id_agencia) > 0 && count($request->stock) < count($request->id_agencia)){
-                Alert::error('Alerta', 'Los campos de stock son obligatorios.')->persistent(true);
-                return redirect()->back();
-            }else{
-
-                /*$validacion=$this->validar_imagen($request->file('imagenes'));
-                if($validacion['valida'] > 0){
-                    return response()->json(['message'=>"Error a enviar imágenes",'icono'=>'warning','titulo'=>'Alerta']);
-                }*/
+            
                 //GENERANDO CODIGO DEL PRODUCTO
                     //fecha de primero
                     //$fecha=date('Ymd');
@@ -129,35 +116,7 @@ class ProductosController extends Controller
                 $producto->status=$request->status;
                 $producto->save();
                 
-                //agregando inventario
-                $inventario= new Inventario();
-                $inventario->id_producto=$producto->id;
-                $inventario->stock=$request->stock_s;
-                $inventario->stock_disponible=$request->stock_s;
-                $inventario->stock_min=$request->stock_min_s;
-                $inventario->save();
-                //----------------
-                //-----------agregando almacén-----------
-                $stock_min=array();
-                if(count($request->stock_min)==0){
-                    for ($i=0; $i < count($request->stock); $i++) { 
-                        $stock_min[$i]=0;
-                    }
-                }else{
-                    for ($i=0; $i < count($request->stock); $i++) { 
-                        $stock_min[$i]=$request->stock_min[$i];
-                    }
-                }
-                for ($i=0; $i < count($request->id_agencia); $i++) { 
-                    $almacen= new Almacen();
-                    $almacen->id_agencia=$request->id_agencia[$i];
-                    $almacen->id_producto=$producto->id;
-                    $almacen->stock=$request->stock[$i];
-                    $almacen->stock_disponible=$request->stock[$i];
-                    $almacen->stock_min=$stock_min[$i];
-                    $almacen->save();
-                }
-                //-----------------------------------
+                
                 //cargando imagenes
                 $imagenes=$request->file('imagenes');
                 foreach($imagenes as $imagen){
@@ -181,7 +140,7 @@ class ProductosController extends Controller
                 }
                 Alert::success('Muy bien', 'Producto registrado con éxito.')->persistent(true);
                 return redirect()->to('productos');                
-            }
+            
         }
     }
 
@@ -206,11 +165,11 @@ class ProductosController extends Controller
      */
     public function edit($id)
     {
-        $almacen=array();
+        
         $productos=Productos::where('id',$id)->first();
         $categorias=Categorias::all();
-        $agencias=Agencias::where('almacen','Si')->get();
-        return view('productos.edit', compact('productos','categorias','agencias','almacen'));
+        
+        return view('productos.edit', compact('productos','categorias'));
     }
 
     /**
@@ -251,9 +210,7 @@ class ProductosController extends Controller
         if($buscar > 0){
             return response()->json(['message'=>"Ya existe un producto con los mismos detalles, marca, modelo y color",'icono'=>'warning','titulo'=>'Alerta']);
         }else{
-            if(count($request->id_agencia) > 0 && count($request->stock) < count($request->id_agencia)){
-                return response()->json(['message'=>"Los campos de stock son obligatorios",'icono'=>'warning','titulo'=>'Alerta']);
-            }else{
+            
                 if($request->imagenes!=null){
                         $validacion=$this->validar_imagen($request->file('imagenes'));
                         if($validacion['valida'] > 0){
@@ -269,38 +226,13 @@ class ProductosController extends Controller
 
                     $producto->save();
 
-                            //-----------agregando almacén-----------
-                    $stock_min=array();
-                    if(count($request->stock_min)==0){
-                        for ($i=0; $i < count($stock); $i++) { 
-                            $stock_min[$i]=0;
-                        }
-                    }else{
-                        for ($i=0; $i < count($stock); $i++) { 
-                            $stock_min[$i]=$request->stock_min[$i];
-                        }
-                    }
-                    //ELEIMINANDO REGISTROS DEL ALMACÉN DEL PRODUCTO
-                        \DB::table('almacen')->where('id_producto',$producto->id)->delete();
-                    //-------
-                    for ($i=0; $i < count($request->id_agencia); $i++) { 
-                        $almacen= new Almacen();
-                        $almacen->id_agencia=$request->id_agencia[$i];
-                        $almacen->id_producto=$producto->id;
-                        $almacen->stock=$request->stock[$i];
-                        $almacen->stock_min=$stock_min[$i];
-                        $almacen->save();
-                    }
-                    //-----------------------------------
+                    
                     if($request->imagenes!=null){
                         //cargando imagenes
                     $imagenes=$request->file('imagenes');
                         foreach($imagenes as $imagen){
                             $codigo=$this->generarCodigo();
-                            /*
-                            $validatedData = $request->validate([
-                                'imagenes' => 'mimes:jpeg,png'
-                            ]);*/
+                            
                             $name=$codigo."_".$imagen->getClientOriginalName();
                             $imagen->move(public_path().'/img_productos', $name);  
                             $url ='img_productos/'.$name;
@@ -315,7 +247,7 @@ class ProductosController extends Controller
 
                     }
                      return response()->json(['message'=>"Producto ".$producto->codigo." - ".$request->detalles." actualizado con éxito",'icono'=>'success','titulo'=>'Éxito']);
-                }
+                
             }
     }
 
@@ -327,13 +259,6 @@ class ProductosController extends Controller
      */
     public function destroy($id)
     {
-        /*$buscar=Pedidos::where('id_producto',$id)->count();
-        if($buscar > 0){
-            
-            return response()->json(['message'=>"El Cliente que intenta eliminar se encuentra relacionado con algún pedido",'icono'=>'warning','titulo'=>'Alerta']);
-        }else{*/
-            $inventario=\DB::table('inventario')->where('id_producto',$id)->delete();
-            $almacen=\DB::table('almacen')->where('id_producto',$id)->delete();
             //esperando relacion con inventario
             $producto=Productos::find($id);
             if($producto->delete()){
@@ -341,8 +266,6 @@ class ProductosController extends Controller
             }else{
                 return response()->json(['message'=>"El producto no pudo ser eliminado",'icono'=>'warning','titulo'=>'Alerta']);
             }
-        //}
-        return redirect()->back();
     }
     protected function validar_imagen($imagenes)
     {
@@ -428,10 +351,7 @@ class ProductosController extends Controller
 
     public function mostrar(Request $request){
         //dd($request->all());
-        $productos=\DB::table('productos')
-        ->join('inventario','inventario.id_producto','=','productos.id')
-        ->where('inventario.existencia','>',0)
-        ->select('productos.*')->get();
+        $productos=\DB::table('productos')->select('productos.*')->get();
         $contar=0;
         foreach($productos as $key){
             foreach($key->imagenes as $key2){
@@ -474,88 +394,7 @@ class ProductosController extends Controller
         return Response()->json($productos);
     }
 
-    public function buscar_stock_producto($id_producto,$opcion)
-    {
-        $productos=Productos::find($id_producto);
-        $en_carrito=CarritoPedido::where('id_producto',$id_producto)->where('id_user',\Auth::getUser()->id)->count();
-        if($en_carrito == 0 && $opcion==1){
-            if (count($productos->inventario) > 0 && count($productos->almacen) > 0) {
-               $producto=\DB::table('productos')
-                ->join('inventarios','inventarios.id_producto','=','productos.id')
-                ->join('almacens','almacens.id_producto','=','productos.id')
-                ->where('productos.id',$id_producto)
-                ->select('productos.*','almacens.stock AS stock_a','inventarios.stock AS stock_i','almacens.stock_disponible AS disponible_a','inventarios.stock_disponible AS disponible_i',\DB::raw('(inventarios.stock + almacens.stock) AS total_stock'),\DB::raw('(inventarios.stock_disponible + almacens.stock_disponible) AS total_disponible'))->get();
-            }else{
-                 if(count($productos->inventario) > 0 && count($productos->almacen) == 0){
-                $producto=\DB::table('productos')
-                ->join('inventarios','inventarios.id_producto','=','productos.id')
-                ->where('productos.id',$id_producto)
-                ->select('productos.*','inventarios.stock AS total_stock','inventarios.stock_disponible AS total_disponible')->get();
-                
-                }else{
-                     if (count($productos->inventario) == 0 && count($productos->almacen) > 0) {
-                        $producto=\DB::table('productos')
-                        ->join('almacens','almacens.id_producto','=','productos.id')
-                        ->where('productos.id',$id_producto)
-                        ->select('productos.*','almacens.stock AS total_stock','almacens.stock_disponible AS total_disponible')->get();
-                    }else{
-                        $producto=Productos::where('id',$id_producto)->get();
-                    }
-                }
-            }
-        }else{
-            if($en_carrito > 0 and $opcion==1){
-                 $producto=Productos::where('id',$id_producto)->get();
-            }
-        }
-        //en caso de estar en el carrito
-        if($en_carrito > 0 && $opcion==2){
-                if (count($productos->inventario) > 0 && count($productos->almacen) > 0) {
-               $producto=\DB::table('productos')
-                ->join('inventarios','inventarios.id_producto','=','productos.id')
-                ->join('almacens','almacens.id_producto','=','productos.id')
-                ->where('productos.id',$id_producto)
-                ->select('productos.*',\DB::raw('(inventarios.stock + almacens.stock) AS total_stock'),\DB::raw('(inventarios.stock_disponible + almacens.stock_disponible) AS total_disponible'))->get();
-                }else{
-                     if(count($productos->inventario) > 0 && count($productos->almacen) == 0){
-                    $producto=\DB::table('productos')
-                    ->join('inventarios','inventarios.id_producto','=','productos.id')
-                    ->where('productos.id',$id_producto)
-                    ->select('productos.*','inventarios.stock AS total_stock','inventarios.stock_disponible AS total_disponible')->get();
-                    
-                        }else{
-                            if (count($productos->inventario) == 0 && count($productos->almacen) > 0) {
-                            $producto=\DB::table('productos')
-                            ->join('almacens','almacens.id_producto','=','productos.id')
-                            ->where('productos.id',$id_producto)
-                            ->select('productos.*','almacens.stock AS total_stock','almacens.stock_disponible AS total_disponible')->get();
-                            }else{
-                            $producto=Productos::where('id',$id_producto)->get();
-                            }
-                        }
-                    }
-                }else{
-                    if($en_carrito ==0 && $opcion==2){
-                        $producto=Productos::where('id',$id_producto)->get();
-                    }
-                }
-
-        //$producto=Productos::where('id',$id_producto)->get();
-
-        return Response()->json($producto);
-    }
-public function exit_product($id_producto){
-
-    $cart_all=App\Models\CarritoPedido::join('productos','productos.id','=','carrito_pedido.id_product')
-        ->where('carrito_pedido.id_user',\Auth::getUser()->id)
-        ->select('products.*')->get();
-        $i=0;
-        foreach($cart_all as $key){
-            if($key->id==$id_producto) $i++;
-        }
-
-        return $i;
-}
+    
     public function registrar(Request $request)
     {
         $message =[

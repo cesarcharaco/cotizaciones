@@ -41,18 +41,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function carrito()
+    
+    public function cotizadores()
     {
-        return $this->hasMany('App\Models\CarritoPedido','id_user','id');
-    }
-
-    public function pedidos()
-    {
-        return $this->hasMany('App\Models\Pedidos','id_user','id');
-    }
-
-    public function recep()
-    {
-        return $this->hasOne('App\Models\Recepcionistas','id_user','id');
+        return $this->hasOne('App\Models\Cotizadores','id_usuario','id');
     }
 }

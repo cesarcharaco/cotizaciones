@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="{!!route('home')!!}" class="brand-link">
       <img src="{!! asset('img/logo.png') !!}" alt="Logo Spreading" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Streaming System</span>
+      <span class="brand-text font-weight-light">Sistema de Cotizaciones</span>
     </a>
 
     <!-- Sidebar -->
@@ -40,16 +40,11 @@
             </a>
           </li>
           
+          
           <li class="nav-item">
-            <a href="{!!route('vendedores.index')!!}" class="nav-link">
-              <i class="nav-icon fas fa-motorcycle"></i>
-              <p>Vendedores</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{!!route('clientes.index')!!}" class="nav-link">
+            <a href="{!!route('solicitantes.index')!!}" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
-              <p>Clientes</p>
+              <p>Solicitantes</p>
             </a>
           </li>
           <li class="nav-item">
@@ -62,6 +57,12 @@
             <a href="{!!route('categorias.index')!!}" class="nav-link">
               <i class="nav-icon fas fa-tag"></i>
               <p>Categorías</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{!!route('cotizaciones.index')!!}" class="nav-link">
+              <i class="nav-icon fas fa-money-check-alt"></i>
+              <p>Cotizaciones</p>
             </a>
           </li>
           

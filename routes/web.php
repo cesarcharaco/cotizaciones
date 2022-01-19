@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VendedoresController;
-use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\CotizadoresController;
+use App\Http\Controllers\SolicitantesController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\PreCotizacionesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +27,15 @@ Auth::routes();
 Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 	
-	Route::resource('/vendedores',VendedoresController::class);
-	Route::resource('/clientes',ClientesController::class);
+	Route::resource('/cotizador',CotizadoresController::class);
+	Route::resource('/solicitantes',SolicitantesController::class);
+	Route::get('/cotizaciones/definitivas',[PreCotizacionesController::class,'definitivas'])->name('cotizaciones.definitivas');
+	Route::get('/cotizaciones/{id_cotizacion}/agregar_items',[PreCotizacionesController::class,'agregar_items'])->name('cotizaciones.agregar_items');
+	Route::resource('/cotizaciones',PreCotizacionesController::class);
 
+	Route::post('/solicitantes/buscar_por_empresa',[SolicitantesController::class,'buscar_por_empresa'])->name('solicitantes.buscar_por_empresa');
+	Route::get('/solicitantes/{id_solicitante}/buscar',[SolicitantesController::class,'buscar_solicitante']);
+	
 	Route::get('productos/imagenes',[ProductosController::class,'imagenes'])->name('productos.imagenes');
 	Route::post('/productos/registrar',[ProductosController::class,'registrar'])->name('productos.registrar');
 	Route::resource('/productos',ProductosController::class);
@@ -37,6 +44,6 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::get('/buscar_categorias',[ProductosController::class, 'buscar_categorias']);
 	Route::resource('/categorias',CategoriasController::class);
 
-	
+
 	
 });

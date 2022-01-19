@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title') Clientes @endsection
+@section('title') Solicitantes @endsection
 @section('content')
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0 text-dark"><i class="nav-icon fa fa-users"></i> Clientes</h1>
+        <h1 class="m-0 text-dark"><i class="nav-icon fa fa-users"></i> Solicitantes</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Clientes</li>
+          <li class="breadcrumb-item active">Solicitantes</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -18,39 +18,39 @@
 </div>
 <section class="content">
   <div class="container-fluid">
-    @include('clientes.partials.create')
-    @include('clientes.partials.edit')
+    @include('solicitantes.partials.create')
+    @include('solicitantes.partials.edit')
     <div class="row">
       <div class="col-12">
         <div class="card card-primary card-outline card-tabs">
           <div class="card-header">
-            <h3 class="card-title"><i class="nav-icon fa fa-users"></i> Clientes registrados</h3>
+            <h3 class="card-title"><i class="nav-icon fa fa-users"></i> Solicitantes registrados</h3>
             <div class="card-tools">
-              @if(search_permits('Clientes','Imprimir PDF')=="Si" || search_permits('Clientes','Imprimir Excel')=="Si")
+              @if(search_permits('Solicitantes','Imprimir PDF')=="Si" || search_permits('Solicitantes','Imprimir Excel')=="Si")
               <div class="btn-group">
                 <a class="btn btn-danger dropdown-toggle btn-sm dropdown-icon text-white" data-toggle="dropdown" data-tooltip="tooltip" data-placement="top" title="Generar reportes">Imprimir </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  @if(search_permits('Clientes','Imprimir PDF')=="Si")
-                  {{-- <a class="dropdown-item" href="{!!route('clientes.pdf')!!}" target="_blank" data-tooltip="tooltip" data-placement="top" title="Reportes en PDF"><i class="fa fa-file-pdf"></i> Exportar a PDF</a> --}}
+                  @if(search_permits('Solicitantes','Imprimir PDF')=="Si")
+                  {{-- <a class="dropdown-item" href="{!!route('solicitantes.pdf')!!}" target="_blank" data-tooltip="tooltip" data-placement="top" title="Reportes en PDF"><i class="fa fa-file-pdf"></i> Exportar a PDF</a> --}}
                   @endif
-                  {{-- @if(search_permits('Clientes','Imprimir Excel')=="Si")
-                  <a class="dropdown-item" href="{!! route('clientes.excel') !!}" target="_blank" data-tooltip="tooltip" data-placement="top" title="Reportes en Excel"><i class="fa fa-file-excel"></i> Exportar a Excel</a>
+                  {{-- @if(search_permits('Solicitantes','Imprimir Excel')=="Si")
+                  <a class="dropdown-item" href="{!! route('solicitantes.excel') !!}" target="_blank" data-tooltip="tooltip" data-placement="top" title="Reportes en Excel"><i class="fa fa-file-excel"></i> Exportar a Excel</a>
                   @endif --}}
                 </div>
               </div>
               @endif
-              @if(search_permits('Clientes','Registrar')=="Si")
-              {{-- <a href="{!! route('clientes.create') !!}" class="btn bg-gradient-primary btn-sm pull-right" data-tooltip="tooltip" data-placement="top" title="Registrar cliente"><i class="fas fa-edit"></i> Registrar clientes</a> --}}
+              @if(search_permits('Solicitantes','Registrar')=="Si")
+              {{-- <a href="{!! route('solicitantes.create') !!}" class="btn bg-gradient-primary btn-sm pull-right" data-tooltip="tooltip" data-placement="top" title="Registrar solicitante"><i class="fas fa-edit"></i> Registrar solicitantes</a> --}}
 
-              <a class="btn btn-info btn-sm text-white" data-toggle="modal" data-target="#create_clientes" data-tooltip="tooltip" data-placement="top" title="Crear Clientes">
+              <a class="btn btn-info btn-sm text-white" data-toggle="modal" data-target="#create_solicitantes" data-tooltip="tooltip" data-placement="top" title="Crear Solicitantes">
                 <i class="fa fa-save"> &nbsp;Registrar</i>
               </a>
               @endif
             </div>
           </div>
-          @if(search_permits('Clientes','Ver mismo usuario')=="Si" || search_permits('Clientes','Ver todos los usuarios')=="Si" || search_permits('Clientes','Editar mismo usuario')=="Si" || search_permits('Clientes','Editar todos los usuarios')=="Si" || search_permits('Clientes','Eliminar mismo usuario')=="Si" || search_permits('Clientes','Eliminar todos los usuarios')=="Si")
+          @if(search_permits('Solicitantes','Ver mismo usuario')=="Si" || search_permits('Solicitantes','Ver todos los usuarios')=="Si" || search_permits('Solicitantes','Editar mismo usuario')=="Si" || search_permits('Solicitantes','Editar todos los usuarios')=="Si" || search_permits('Solicitantes','Eliminar mismo usuario')=="Si" || search_permits('Solicitantes','Eliminar todos los usuarios')=="Si")
           <div class="card-body">
-            <table id="clientes_table" class="table table-bordered table-striped table-sm" style="font-size: 12px;">
+            <table id="solicitantes_table" class="table table-bordered table-striped table-sm" style="font-size: 12px;">
               <thead>
                 <tr>
                   <th>Nombres</th>
@@ -58,6 +58,7 @@
                   <th>Celular</th>
                   <th>Dirección</th>
                   <th>Localidad</th>
+                  <th>Empresa</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -90,13 +91,13 @@ $(document).ready( function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  $('#clientes_table').DataTable({
+  $('#solicitantes_table').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
     autoWidth: false,
     ajax: {
-      url:"{{ url('clientes') }}"
+      url:"{{ url('solicitantes') }}"
    },
     columns: [
       { data: 'nombres', name: 'nombres' },
@@ -104,6 +105,7 @@ $(document).ready( function () {
       { data: 'celular', name: 'celular' },
       { data: 'direccion', name: 'direccion' },
       { data: 'localidad', name: 'localidad' },
+      { data: 'nombre', name: 'nombre'},
       {data: 'action', name: 'action', orderable: false},
     ],
     order: [[0, 'desc']]
@@ -111,13 +113,13 @@ $(document).ready( function () {
 });
 
 //--CODIGO PARA CREAR PBX (LEVANTAR EL MODAL) ---------------------//
-$('#createNewCliente').click(function () {
-  $('#clienteForm').trigger("reset");
-  $('#create_clientes').modal({backdrop: 'static', keyboard: true, show: true});
+$('#createNewSolicitante').click(function () {
+  $('#solicitanteForm').trigger("reset");
+  $('#create_solicitantes').modal({backdrop: 'static', keyboard: true, show: true});
   $('.alert-danger').hide();
 });
 //--CODIGO PARA CREAR PBX (GUARDAR REGISTRO) ---------------------//
-$('#SubmitCreateCliente').click(function(e) {
+$('#SubmitCreateSolicitante').click(function(e) {
   e.preventDefault();
   $.ajaxSetup({
     headers: {
@@ -126,7 +128,7 @@ $('#SubmitCreateCliente').click(function(e) {
 
   });
   $.ajax({
-    url: "{{ route('clientes.store') }}",
+    url: "{{ route('solicitantes.store') }}",
     method: 'post',
     data: {
       nombres: $('#nombres').val(),
@@ -134,6 +136,7 @@ $('#SubmitCreateCliente').click(function(e) {
       celular: $('#celular').val(),
       direccion: $('#direccion').val(),
       localidad: $('#localidad').val(),
+      id_empresa: $('#id_empresa').val(),
     },
     success: function(result) {
       if(result.errors) {
@@ -144,11 +147,11 @@ $('#SubmitCreateCliente').click(function(e) {
         });
       } else {
         $('.alert-danger').hide();
-        var oTable = $('#clientes_table').dataTable();
+        var oTable = $('#solicitantes_table').dataTable();
         oTable.fnDraw(false);
         Swal.fire ( result.titulo ,  result.message ,  result.icono );
         if (result.icono=="success") {
-          $("#create_clientes").modal('hide');
+          $("#create_solicitantes").modal('hide');
         }
       }
     }
@@ -156,16 +159,16 @@ $('#SubmitCreateCliente').click(function(e) {
 });
 
 //--CODIGO PARA EDITAR AGENCIA ---------------------//
-$('body').on('click', '#editCliente', function () {
+$('body').on('click', '#editSolicitante', function () {
   var id = $(this).data('id');
   $.ajax({
     method:"GET",
-    url: "clientes/"+id+"/edit",
+    url: "solicitantes/"+id+"/edit",
     dataType: 'json',
     success: function(data){
-      $('#edit_clientes').modal({backdrop: 'static', keyboard: true, show: true});
+      $('#edit_solicitantes').modal({backdrop: 'static', keyboard: true, show: true});
       $('.alert-danger').hide();
-      $('#id_cliente_edit').val(data.id);
+      $('#id_solicitante_edit').val(data.id);
       $('#nombres_edit').val(data.nombres);
       $('#apellidos_edit').val(data.apellidos);
       $('#celular_edit').val(data.celular);
@@ -175,14 +178,14 @@ $('body').on('click', '#editCliente', function () {
   });
 });
 //--CODIGO PARA UPDATE ESTADO ---------------------//
-$('#SubmitEditCliente').click(function(e) {
+$('#SubmitEditSolicitante').click(function(e) {
   e.preventDefault();
-  var id = $('#id_cliente_edit').val();
+  var id = $('#id_solicitante_edit').val();
   $.ajax({
     method:'PUT',
-    url: "clientes/"+id+"",
+    url: "solicitantes/"+id+"",
     data: {
-      id_cliente: $('#id_cliente_edit').val(),
+      id_solicitante: $('#id_solicitante_edit').val(),
       nombres: $('#nombres_edit').val(),
       apellidos: $('#apellidos_edit').val(),
       celular: $('#celular_edit').val(),
@@ -197,11 +200,11 @@ $('#SubmitEditCliente').click(function(e) {
           $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
         });
       } else {
-        var oTable = $('#clientes_table').dataTable();
+        var oTable = $('#solicitantes_table').dataTable();
         oTable.fnDraw(false);
         Swal.fire ( data.titulo ,  data.message ,  data.icono );
         if (data.icono=="success") {
-          $("#edit_clientes").modal('hide');
+          $("#edit_solicitantes").modal('hide');
         }
       }
     },
@@ -211,10 +214,10 @@ $('#SubmitEditCliente').click(function(e) {
   });
 });
 //--CODIGO PARA ELIMINAR ESTADO ---------------------//
-function deleteCliente(id){
+function deleteSolicitante(id){
   var id = id;
   Swal.fire({
-    title: '¿Estás seguro que desea eliminar a esta cliente?',
+    title: '¿Estás seguro que desea eliminar a esta solicitante?',
     text: "¡Esta opción no podrá deshacerse en el futuro!",
     icon: 'warning',
     showCancelButton: true,
@@ -227,16 +230,16 @@ function deleteCliente(id){
       // ajax
       $.ajax({
         type:"DELETE",
-        url: "clientes/"+id+"",
+        url: "solicitantes/"+id+"",
         data: { id: id },
         dataType: 'json',
         success: function(response){
           Swal.fire ( response.titulo ,  response.message ,  response.icono );
-          var oTable = $('#clientes_table').dataTable();
+          var oTable = $('#solicitantes_table').dataTable();
           oTable.fnDraw(false);
         },
         error: function (data) {
-          Swal.fire({title: "Error del servidor", text:  "Cliente no eliminado", icon:  "error"});
+          Swal.fire({title: "Error del servidor", text:  "Solicitante no eliminado", icon:  "error"});
         }
       });
     }
