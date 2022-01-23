@@ -20,11 +20,12 @@ class CreateCotizacionesTable extends Migration
             $table->text('descripcion_general');
             $table->unsignedBigInteger('id_solicitante');
             $table->unsignedBigInteger('id_cotizador');
+            $table->enum('moneda',['Dolar','Euro','Lira'])->default('Dolar');
             $table->string('oc_recibida')->nullable();
             $table->float('valor_total')->nullable();
             $table->integer('guia_boreal')->nullable();
             $table->integer('factura_boreal')->nullable();
-            $table->date('fecha_entrega')->nullable();
+            $table->date('fecha_entrega');
             $table->string('oc_boreal')->nullable();
             $table->timestamps();
         });

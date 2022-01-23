@@ -51,6 +51,7 @@
                   <th>Empresa</th>
                   <th>Solicitante</th>
                   <th>Cotizador</th>
+                  <th>Moneda</th>
                   <th>OC Recibida</th>
                   <th>Valor Total Venta Neto Ch$</th>
                   <th>Guía Boreal</th>
@@ -104,6 +105,7 @@ $(document).ready( function () {
       { data: 'nombre', name: 'nombre' },
       { data: 'id_solicitante', name: 'id_solicitante' },
       { data: 'id_cotizador', name: 'id_cotizador' },
+      { data: 'moneda', name: 'moneda' },
       { data: 'oc_recibida', name: 'oc_recibida' },
       { data: 'valor_total', name: 'valor_total' },
       { data: 'guia_boreal', name: 'guia_boreal' },

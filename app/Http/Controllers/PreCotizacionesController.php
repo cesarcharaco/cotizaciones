@@ -9,6 +9,11 @@ use App\Models\Cotizadores;
 use App\Models\Correlativos;
 use App\Models\Solicitantes;
 use App\Models\Cotizaciones;
+use App\Models\Productos;
+use App\Models\Tasas;
+use App\Models\TasaIva;
+use App\Models\Categorias;
+use App\Models\Imagenes;
 use Alert;
 //use Datatables;
 class PreCotizacionesController extends Controller
@@ -58,8 +63,6 @@ class PreCotizacionesController extends Controller
             $this->cargar_correlativos();
         }
         
-
-
 
         do{
             $cot=Correlativos::where('status','Disponible')->where('fecha',$hoy)->first();
@@ -131,6 +134,7 @@ class PreCotizacionesController extends Controller
             $pre_cotizacion->empresa=$empresa->nombre;
             $pre_cotizacion->solicitante=$solicitante->nombres." ".$solicitante->apellidos;
             $pre_cotizacion->cotizador=$cotizador->cotizador;
+            $pre_cotizacion->moneda=$request->moneda;
             $pre_cotizacion->oc_recibida=$request->oc_recibida;
             $pre_cotizacion->valor_total=$request->valor_total;
             $pre_cotizacion->guia_boreal=$request->guia_boreal;
@@ -145,6 +149,7 @@ class PreCotizacionesController extends Controller
             $cotizacion->descripcion_general=$request->descripcion_general;
             $cotizacion->id_solicitante=$id_solicitante;
             $cotizacion->id_cotizador=$cotizador->id;
+            $cotizacion->moneda=$request->moneda;
             $cotizacion->oc_recibida=$request->oc_recibida;
             $cotizacion->valor_total=$request->valor_total;
             $cotizacion->guia_boreal=$request->guia_boreal;
@@ -245,7 +250,7 @@ class PreCotizacionesController extends Controller
 
             return datatables()->of($cotizaciones)
                 ->addColumn('action', function ($row) {
-                    $agregar_item = '<a href="cotizaciones/'.$row->id.'/agregar_items" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-plus"></i></a>';
+                    $agregar_item = '<a href="../cotizaciones/'.$row->id.'/agregar_items" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-plus"></i></a>';
                     
                     return $agregar_item;
                 })->rawColumns(['action'])
@@ -266,8 +271,100 @@ class PreCotizacionesController extends Controller
 
     public function agregar_items($id_cotizacion)
     {
-        $cotizacion=Cotizaciones::find($id_cotizacion);
+        /*$items=\DB::table('items')
+            ->join('productos','productos.id','=','items.id_producto')
+            ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
+            ->where('items.id_cotizacion',$id_cotizacion)
+            ->select('items.*','productos.detalles')->get();
+            dd($items);*/
+       if(request()->ajax()) {
+            
+            $items=\DB::table('items')
+            ->join('productos','productos.id','=','items.id_producto')
+            ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
+            ->where('items.id_cotizacion',$id_cotizacion)
+            ->select('items.*','productos.detalles')->get();
 
-        return view('cotizaciones.partials.agregar_items',compact('cotizacion'));
+
+            return datatables()->of($items)
+                ->addColumn('action', function ($row) {
+                    $edit = '<a href="cotizaciones/'.$row->id.'/edit" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-pencil-alt"></i></a>';
+                    $delete = ' <a href="javascript:void(0);" id="delete-cotizacion" onClick="deleteCotizacion('.$row->id.')" class="delete btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
+                    return $edit . $delete;
+                })
+                ->addColumn('url', function ($row) {
+                    $buscar=Imagenes::where('id_producto',$row->id_producto)->first();
+                    if (is_null($buscar)) {
+                        $url="No registrada";
+                    } else {
+                        $url=$buscar->url;
+                    }
+                    return $url;
+                })
+                ->rawColumns(['action','url'])
+                ->addIndexColumn()
+                ->make(true);
+            }
+        $cotizacion=Cotizaciones::find($id_cotizacion);
+        $categorias=Categorias::all();
+        $productos=Productos::where('status','Activo')->get();
+        $tasas=Tasas::where('status','Activa')->where('moneda',$cotizacion->moneda)->first();
+        $tasaiva=TasaIva::where('status_i','Activa')->first();
+        if(is_null($tasas) || is_null($tasaiva)){
+            Alert::warning('Alerta!!', 'No se pueden Agregar items miemtras no exista una Tasa de la moneda de la Cotización y/o Tasa de IVA activa')->persistent(true);
+            return redirect()->to('cotizaciones');
+        }else{
+
+            return view('cotizaciones.partials.agregar_items',compact('cotizacion','productos','tasas','tasaiva','categorias'));
+        }
     }
+
+    public function calcular_item(Request $request)
+    {
+        $tasa=Tasas::where('moneda',$request->moneda)->where('status','Activa')->first();
+        $tasaiva=TasaIva::where('status_i','Activa')->first();
+       
+        //precio con iva
+        $pp_ci=$tasa->tasa*$request->pda;
+        //precio sin iva
+        $pp_si=$pp_ci/(1+($tasaiva->tasa_i/100));
+        //traslado por unidad
+        if ($request->cant==0) {
+            $traslado_x_und=0;
+        } else {
+            $traslado_x_und=$request->traslado/$request->cant;
+        }
+        $porc=$request->porc_uti/100;
+        //precio unitario
+        $precio_unit=($pp_si*(1+$porc))+$traslado_x_und;
+        //total por producto
+        $total_pp=$precio_unit*$request->cant;
+        //uti por und
+        $uti_x_und=$precio_unit-$pp_ci;
+        //uti total de items
+        $uti_x_total_p=$uti_x_und*$request->cant;
+        //boreal
+        $boreal=$uti_x_total_p;
+
+        $datos=array();
+        $precio_unit=round($precio_unit,2);
+        $total_pp=round($total_pp,2);
+        $pp_ci=round($pp_ci,2);
+        $pp_si=round($pp_si,2);
+        $uti_x_und=round($uti_x_und,2);
+        $uti_x_total_p=round($uti_x_total_p,2);
+        $boreal=round($boreal,2);
+
+        $datos[0]=$precio_unit;
+        $datos[1]=$total_pp;
+        $datos[2]=$pp_ci;
+        $datos[3]=$pp_si;
+        $datos[4]=$uti_x_und;
+        $datos[5]=$uti_x_total_p;
+        $datos[6]=$boreal;
+
+        return $datos;
+
+    }
+    
 }

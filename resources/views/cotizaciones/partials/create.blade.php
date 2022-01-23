@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0"><i class="nav-icon fa fa-shopping-basket"></i> Cotizaciones</h1>
+        <h1 class="m-0"><i class="nav-icon fas fa-money-check-alt"></i> Cotizaciones</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -29,9 +29,9 @@
           <form action="{{ route('cotizaciones.store') }}" class="form-horizontal" method="POST" autocomplete="off" name="productoForm" id="productoForm" enctype="Multipart/form-data" data-parsley-validate>
             @csrf
             <div class="card-header">
-              <h3 class="card-title" style="margin-top: 5px;"><i class="nav-icon fa fa-shopping-basket"></i> Registro de cotización: : Número de Cotización {{$correlativo}}</h3>
+              <h3 class="card-title" style="margin-top: 5px;"><i class="nav-icon fa fa-shopping-basket"></i> Registro de cotización: Número de Cotización {{$correlativo}}</h3>
               <div class="float-right">
-                <a href="{{ route('productos.index') }}" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Regresar</a>
+                <a href="{{ route('cotizaciones.index') }}" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Regresar</a>
                 @if($correlativo > 0)                
                 <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Guardar registro</button>
                 @endif
@@ -129,6 +129,21 @@
                 <input type="hidden" name="cotizador" id="cotizador" value="{{\Auth::getUser()->id}}">
               @endif
               <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="moneda">Moneda <b style="color: red;">*</b></label>
+                    <select name="moneda" id="moneda" class="form-control select2bs4" required="required" title="seleccione la moneda">
+                      <option value="Dolar">Dolar</option>
+                      <option value="Euro">Euro</option>
+                      <option value="Lira">Lira</option>
+                    </select>
+                  </div>
+                  @error('moneda')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
+                </div>
+              </div>
+              <div class="row">
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label for="oc_recibida">OC Recibida </label>
@@ -169,8 +184,8 @@
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="fecha_entrega">Fecha de Entrega</label>
-                        <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" >
+                        <label for="fecha_entrega">Fecha de Entrega <b style="color: red;">*</b></label>
+                        <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" value="{{date('Y-m-d')}}" >
                       </div>
                       @error('fecha_entrega')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -221,7 +236,7 @@ function categoria_data() {
       });
     },
     error: function (data) {
-      Swal.fire({title: "Error del servidor", text: "Consulta de medio publicitario.", icon:  "error"});
+      Swal.fire({title: "Error del servidor", text: "Verifique la conexión", icon:  "error"});
     }
   });
 }

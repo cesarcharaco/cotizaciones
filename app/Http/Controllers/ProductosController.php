@@ -135,8 +135,6 @@ class ProductosController extends Controller
                     $img->url=$url;
                     $img->save();
 
-                    //$producto->imagenes()->attach($img);
-                    
                 }
                 Alert::success('Muy bien', 'Producto registrado con éxito.')->persistent(true);
                 return redirect()->to('productos');                
@@ -443,5 +441,25 @@ class ProductosController extends Controller
             return response()->json(['message'=>"Producto registrado con éxito",'icono'=>'success','titulo'=>'Éxito','productos' => $productos]); 
         }
 
+    }
+
+    public function buscar_producto($id_producto)
+    {
+        $producto=\DB::table('productos')
+        ->join('imagenes','imagenes.id_producto','=','productos.id')
+        ->join('categorias','categorias.id','=','productos.id_categoria')
+        ->where('productos.id',$id_producto)
+        ->select('productos.*','imagenes.url','categorias.categoria')
+        ->get();
+        if (count($producto) > 0 ) {
+            return $producto;
+        } else {
+            return $producto=\DB::table('productos')
+            ->where('productos.id',$id_producto)
+            ->join('categorias','categorias.id','=','productos.id_categoria')
+            ->select('productos.*','categorias.categoria')
+            ->get();
+        }
+        
     }
 }

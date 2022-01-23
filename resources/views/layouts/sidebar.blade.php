@@ -65,7 +65,18 @@
               <p>Cotizaciones</p>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a href="{!!route('tasas.index')!!}" class="nav-link">
+              <i class="nav-icon fa fa-chart-line"></i>
+              <p>Tasas</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{!!route('tasasiva.index')!!}" class="nav-link">
+              <i class="nav-icon fa fa-chart-bar"></i>
+              <p>Tasas de IVA</p>
+            </a>
+          </li>
         </ul>
 
       </nav>

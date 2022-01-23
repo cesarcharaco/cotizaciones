@@ -18,8 +18,8 @@ class CreateProductosTable extends Migration
             $table->string('codigo')->unique();
             $table->string('detalles');
             $table->string('marca')->nullable();
-            $table->string('modelo');
-            $table->string('color');
+            $table->string('modelo')->nullable();
+            $table->string('color')->nullable();
             $table->unsignedBigInteger('id_categoria');
             $table->enum('status',['Activo','Inactivo'])->default('Activo');
 

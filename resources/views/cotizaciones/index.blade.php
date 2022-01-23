@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0 text-dark"><i class="nav-icon  fas fa-money-check-alt"></i> Cotizaciones</h1>
+        <h1 class="m-0 text-dark"><i class="nav-icon fas fa-money-check-alt"></i> Cotizaciones</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -59,6 +59,7 @@
                   <th>Empresa</th>
                   <th>Solicitante</th>
                   <th>Cotizador</th>
+                  <th>Moneda</th>
                   <th>OC Recibida</th>
                   <th>Valor Total Venta Neto Ch$</th>
                   <th>Guía Boreal</th>
@@ -112,6 +113,7 @@ $(document).ready( function () {
       { data: 'empresa', name: 'empresa' },
       { data: 'solicitante', name: 'solicitante' },
       { data: 'cotizador', name: 'cotizador' },
+      { data: 'moneda', name: 'moneda' },
       { data: 'oc_recibida', name: 'oc_recibida' },
       { data: 'valor_total', name: 'valor_total' },
       { data: 'guia_boreal', name: 'guia_boreal' },
@@ -147,6 +149,7 @@ $('#SubmitCreateCotizacion').click(function(e) {
       empresa: $('#empresa').val(),
       solicitante: $('#solicitante').val(),
       cotizador: $('#cotizador').val(),
+      moneda: $('#moneda').val(),
       oc_recibida: $('#oc_recibida').val(),
       valor_total: $('#valor_total').val(),
       guia_boreal: $('#guia_boreal').val(),
@@ -191,6 +194,7 @@ $('body').on('click', '#editCotizacion', function () {
       $('#empresa_edit').val(date[0].empresa);
       $('#solicitante_edit').val(date[0].solicitante);
       $('#cotizador_edit').val(date[0].cotizador);
+      $('#moneda_edit').val(date[0].moneda);
       $('#oc_recibida_edit').val(date[0].oc_recibida);
       $('#valor_total_edit').val(date[0].valor_total);
       $('#guia_boreal_edit').val(date[0].guia_boreal);
@@ -215,6 +219,7 @@ $('#SubmitEditCotizacion').click(function(e) {
       empresa: $('#empresa_edit').val(),
       solicitante: $('#solicitante_edit').val(),
       cotizador: $('#cotizador_edit').val(),
+      moneda: $('#moneda_edit').val(),
       oc_recibida: $('#oc_recibida_edit').val(),
       valor_total: $('#valor_total_edit').val(),
       guia_boreal: $('#guia_boreal_edit').val(),

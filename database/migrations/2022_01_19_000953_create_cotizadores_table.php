@@ -16,6 +16,7 @@ class CreateCotizadoresTable extends Migration
         Schema::create('cotizadores', function (Blueprint $table) {
             $table->id();
             $table->string('cotizador');
+            $table->integer('rut');
             $table->string('telefono')->nullable();
             $table->string('correo');
             $table->unsignedBigInteger('id_usuario');

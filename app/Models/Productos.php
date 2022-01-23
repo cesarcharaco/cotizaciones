@@ -55,4 +55,9 @@ class Productos extends Model
     {
         return $this->hasMany('App\Models\ProductosReclamos','id_producto','id');
     }
+
+    public function items()
+    {
+        return $this->hasMany('App\Models\Items','id_producto','id');
+    }
 }

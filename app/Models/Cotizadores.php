@@ -12,7 +12,7 @@ class Cotizadores extends Model
 
     protected $table='cotizadores';
 
-    protected $fillable=['cotizador','telefono','correo','id_usuario'];
+    protected $fillable=['cotizador','rut','telefono','correo','id_usuario'];
 
     public function cotizaciones()
     {
