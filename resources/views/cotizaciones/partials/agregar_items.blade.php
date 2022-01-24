@@ -21,7 +21,7 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-    @include('cotizaciones.partials.cargar_items')
+    
     <div class="row">
       <div class="col-md-12">
         <!-- Horizontal Form -->
@@ -58,7 +58,6 @@
                 </div>
               </div>
               <div class="row">
-                
                 <div class="col-sm">
                   <div class="form-group">
                     <label for="descripcion_general">Descripción General: {{$cotizacion->descripcion_general}}</label>
@@ -169,7 +168,9 @@
                     </table>
                   </div>
                 </div>
-              </div>
+              </div><!-- cierre de row -->
+
+
             </div>
             <!-- /.card-body -->
           </form>
@@ -191,13 +192,14 @@
   });
 
   var id_cotizacion=$("#id_cotizacion").val();
+  mi:url=
   $('#items').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
     autoWidth: false,
     ajax: {
-      url:"{{ url('cotizaciones/"+id_cotizacion+"/agregar_items') }}"
+      url:'{{ url("cotizaciones/\''+id_cotizacion+'\'/agregar_items") }}'
    },
 
     columns: [

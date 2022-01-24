@@ -15,85 +15,85 @@ class UsersTableSeeder extends Seeder
     {
         \DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'admin@cotizaciones.com',
-            'password' => bcrypt('123456'),
+            'email' => 'admin@comerciaboreal.cl',
+            'password' => bcrypt('Admin2022.'),
             'user_type' => 'Admin',
         ]);
         
             
         \DB::table('users')->insert([
-            'name' => 'Justin Beaber',
-            'email' => 'justin@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'name' => 'Fernando Olivares',
+            'email' => 'fernando@comerciaboreal.cl',
+            'password' => bcrypt('Fernando2022.'),
             'user_type' => 'Cotizador',
         ]);
         
         \DB::table('users')->insert([
-            'name' => 'Shakira Mebarak',
-            'email' => 'shakira@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'name' => 'Daniel Olivares',
+            'email' => 'daniel@comerciaboreal.cl',
+            'password' => bcrypt('Daniel2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
-            'name' => 'Chester Benintong',
-            'email' => 'chester@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'name' => 'Guillermo Olivares',
+            'email' => 'guillermo@comerciaboreal.cl',
+            'password' => bcrypt('Guillermo2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
-            'name' => 'Jon Bon Jovi',
-            'email' => 'bonjovi@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'name' => 'Rodrigo Tapia',
+            'email' => 'rodrigo@comerciaboreal.cl',
+            'password' => bcrypt('Rodrigo2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
-            'name' => 'Michael Jackson',
-            'email' => 'michael@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'name' => 'Felipe Tapia',
+            'email' => 'felipe@comerciaboreal.cl',
+            'password' => bcrypt('Felipe2022.'),
             'user_type' => 'Cotizador',
-        ]);
+        ]);/*
         \DB::table('users')->insert([
             'name' => 'Janneth Jackson',
-            'email' => 'janneth@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'janneth@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'Alejandro Fernandez',
-            'email' => 'alejandro@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'alejandro@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'Thalia Motola',
-            'email' => 'thalia@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'thalia@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'Bruno Mars',
-            'email' => 'bruno@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'bruno@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'Adele',
-            'email' => 'adele@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'adele@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'James Blunt',
-            'email' => 'james@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'james@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
         ]);
         \DB::table('users')->insert([
             'name' => 'Nelly Furtado',
-            'email' => 'nelly@cotizacionesboreal.com',
-            'password' => bcrypt('123456'),
+            'email' => 'nelly@comerciaboreal.cl',
+            'password' => bcrypt('2022.'),
             'user_type' => 'Cotizador',
-        ]);
+        ]);*/
 
     }
 }

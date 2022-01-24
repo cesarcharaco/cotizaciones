@@ -127,35 +127,35 @@
             </div>
           </div>
           <div class="card-body">
-          <div class="row">
-            <div class="col-sm-12">
-              <table id="totales" class="table table-bordered table-striped table-sm table-responsive">
-                <thead>
-                  <tr>
-                    <th>Precio Unit.</th>
-                    <th>Total</th>
-                    <th>Precio Pesos CON/IVA</th>
-                    <th>Precio Pesos SIN/IVA</th>
-                    <th>UTI x Unidad</th>
-                    <th>UTI x Total</th>
-                    <th>Boreal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td align="center"><span id="precio_unit_txt"></span><input type="hidden" name="precio_unit" id="precio_unit" ></td>
-                    <td align="center"><span id="total_pp_txt"></span><input type="hidden" name="total_pp" id="total_pp" ></td>
-                    <td align="center"><span id="pp_ci_txt"></span><input type="hidden" name="pp_ci" id="pp_ci" ></td>
-                    <td align="center"><span id="pp_si_txt"></span><input type="hidden" name="pp_si" id="pp_si" ></td>
-                    <td align="center"><span id="uti_x_und_txt"></span><input type="hidden" name="uti_x_und" id="uti_x_und" ></td>
-                    <td align="center"><span id="uti_x_total_p_txt"></span><input type="hidden" name="uti_x_total_p" id="uti_x_total_p" ></td>
-                    <td align="center"><span id="boreal_txt"></span><input type="hidden" name="boreal" id="boreal" ></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row">
+              <div class="col-sm-12">
+                <table id="totales" class="table table-bordered table-striped table-sm table-responsive">
+                  <thead>
+                    <tr>
+                      <th>Precio Unit.</th>
+                      <th>Total</th>
+                      <th>Precio Pesos CON/IVA</th>
+                      <th>Precio Pesos SIN/IVA</th>
+                      <th>UTI x Unidad</th>
+                      <th>UTI x Total</th>
+                      <th>Boreal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td align="center"><span id="precio_unit_txt"></span><input type="hidden" name="precio_unit" id="precio_unit" ></td>
+                      <td align="center"><span id="total_pp_txt"></span><input type="hidden" name="total_pp" id="total_pp" ></td>
+                      <td align="center"><span id="pp_ci_txt"></span><input type="hidden" name="pp_ci" id="pp_ci" ></td>
+                      <td align="center"><span id="pp_si_txt"></span><input type="hidden" name="pp_si" id="pp_si" ></td>
+                      <td align="center"><span id="uti_x_und_txt"></span><input type="hidden" name="uti_x_und" id="uti_x_und" ></td>
+                      <td align="center"><span id="uti_x_total_p_txt"></span><input type="hidden" name="uti_x_total_p" id="uti_x_total_p" ></td>
+                      <td align="center"><span id="boreal_txt"></span><input type="hidden" name="boreal" id="boreal" ></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>

@@ -14,18 +14,18 @@ class CotizadoresTableSeeder extends Seeder
     public function run()
     {
         \DB::table('cotizadores')->insert([
-        	['cotizador' => 'Justin Beaber','telefono' => '99999999999', 'correo' => 'justin@cotizacionesboreal.com','id_usuario' => 2],
-        	['cotizador' => 'Shakira Mebarak','telefono' => '88888888888', 'correo' => 'shakira@cotizacionesboreal.com','id_usuario' => 3],
-        	['cotizador' => 'Chester Benintong','telefono' => '77777777777', 'correo' => 'chester@cotizacionesboreal.com','id_usuario' => 4],
-        	['cotizador' => 'Jon Bon Jovi','telefono' => '66666666666', 'correo' => 'bonjovi@cotizacionesboreal.com','id_usuario' => 5],
-        	['cotizador' => 'Michael Jackson','telefono' => '55555555555', 'correo' => 'michael@cotizacionesboreal.com','id_usuario' => 6],
-        	['cotizador' => 'Janneth Jackson','telefono' => '44444444444', 'correo' => 'janneth@cotizacionesboreal.com','id_usuario' => 7],
-        	['cotizador' => 'Alejandro Fernandez','telefono' => '33333333333', 'correo' => 'alejandro@cotizacionesboreal.com','id_usuario' => 8],
-        	['cotizador' => 'Thalia Motola','telefono' => '22222222222', 'correo' => 'thalia@cotizacionesboreal.com','id_usuario' => 9],
-        	['cotizador' => 'Bruno Mars','telefono' => '11111111111', 'correo' => 'bruno@cotizacionesboreal.com','id_usuario' => 10],
-        	['cotizador' => 'Adele','telefono' => '12345678987', 'correo' => 'adele@cotizacionesboreal.com','id_usuario' => 11],
-        	['cotizador' => 'James Blunt','telefono' => '98765432123', 'correo' => 'james@cotizacionesboreal.com','id_usuario' => 12],
-        	['cotizador' => 'Nelly Furtado','telefono' => '98765456789', 'correo' => 'nelly@cotizacionesboreal.com','id_usuario' => 13],
+        	['cotizador' => 'Fernando Olivares','telefono' => '99999999999', 'correo' => 'fernando@comerciaboreal.cl','id_usuario' => 2],
+        	['cotizador' => 'Daniel Olivares','telefono' => '88888888888', 'correo' => 'daniel@comerciaboreal.com','id_usuario' => 3],
+        	['cotizador' => 'Guillermo Olivares','telefono' => '77777777777', 'correo' => 'guillermo@comerciaboreal.com','id_usuario' => 4],
+        	['cotizador' => 'Rodrigo Tapia','telefono' => '66666666666', 'correo' => 'rodrigo@comerciaboreal.com','id_usuario' => 5],
+        	['cotizador' => 'Felipe Tapia','telefono' => '55555555555', 'correo' => 'felipe@comerciaboreal.com','id_usuario' => 6]/*,
+        	['cotizador' => 'Janneth Jackson','telefono' => '44444444444', 'correo' => 'janneth@comerciaboreal.com','id_usuario' => 7],
+        	['cotizador' => 'Alejandro Fernandez','telefono' => '33333333333', 'correo' => 'alejandro@comerciaboreal.com','id_usuario' => 8],
+        	['cotizador' => 'Thalia Motola','telefono' => '22222222222', 'correo' => 'thalia@comerciaboreal.com','id_usuario' => 9],
+        	['cotizador' => 'Bruno Mars','telefono' => '11111111111', 'correo' => 'bruno@comerciaboreal.com','id_usuario' => 10],
+        	['cotizador' => 'Adele','telefono' => '12345678987', 'correo' => 'adele@comerciaboreal.com','id_usuario' => 11],
+        	['cotizador' => 'James Blunt','telefono' => '98765432123', 'correo' => 'james@comerciaboreal.com','id_usuario' => 12],
+        	['cotizador' => 'Nelly Furtado','telefono' => '98765456789', 'correo' => 'nelly@comerciaboreal.com','id_usuario' => 13],*/
         ]);
     }
 }

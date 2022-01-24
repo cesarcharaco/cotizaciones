@@ -271,13 +271,14 @@ class PreCotizacionesController extends Controller
 
     public function agregar_items($id_cotizacion)
     {
-        /*$items=\DB::table('items')
-            ->join('productos','productos.id','=','items.id_producto')
-            ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
-            ->where('items.id_cotizacion',$id_cotizacion)
-            ->select('items.*','productos.detalles')->get();
-            dd($items);*/
-       if(request()->ajax()) {
+        
+        $cotizacion=Cotizaciones::find($id_cotizacion);
+        $categorias=Categorias::all();
+        $productos=Productos::where('status','Activo')->get();
+        $tasas=Tasas::where('status','Activa')->where('moneda',$cotizacion->moneda)->first();
+        $tasaiva=TasaIva::where('status_i','Activa')->first();
+
+        if(request()->ajax()) {
             
             $items=\DB::table('items')
             ->join('productos','productos.id','=','items.id_producto')
@@ -301,15 +302,10 @@ class PreCotizacionesController extends Controller
                     }
                     return $url;
                 })
-                ->rawColumns(['action','url'])
+                ->rawColumns(['url','action'])
                 ->addIndexColumn()
                 ->make(true);
             }
-        $cotizacion=Cotizaciones::find($id_cotizacion);
-        $categorias=Categorias::all();
-        $productos=Productos::where('status','Activo')->get();
-        $tasas=Tasas::where('status','Activa')->where('moneda',$cotizacion->moneda)->first();
-        $tasaiva=TasaIva::where('status_i','Activa')->first();
         if(is_null($tasas) || is_null($tasaiva)){
             Alert::warning('Alerta!!', 'No se pueden Agregar items miemtras no exista una Tasa de la moneda de la Cotización y/o Tasa de IVA activa')->persistent(true);
             return redirect()->to('cotizaciones');
