@@ -271,8 +271,9 @@ class PreCotizacionesController extends Controller
 
     public function agregar_items($id_cotizacion)
     {
-        
+        $id_cotizacion=intval($id_cotizacion);
         $cotizacion=Cotizaciones::find($id_cotizacion);
+        //dd($cotizacion);
         $categorias=Categorias::all();
         $productos=Productos::where('status','Activo')->get();
         $tasas=Tasas::where('status','Activa')->where('moneda',$cotizacion->moneda)->first();
