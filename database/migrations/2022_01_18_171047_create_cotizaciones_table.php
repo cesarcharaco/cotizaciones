@@ -27,6 +27,7 @@ class CreateCotizacionesTable extends Migration
             $table->integer('factura_boreal')->nullable();
             $table->date('fecha_entrega');
             $table->string('oc_boreal')->nullable();
+            $table->enum('status',['En Espera','Entregado','Entrega Parcial','En Proceso','ERP/OC','Adjudicada/OC','Contestada','ERP/COTI','Seleccionada a Usuario'])->default('En Espera');
             $table->timestamps();
         });
     }

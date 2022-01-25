@@ -66,6 +66,7 @@
                   <th>Factura Boreal</th>
                   <th>Fecha Entrega</th>
                   <th>OC Boreal</th>
+                  <th>Status</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -111,7 +112,7 @@ $(document).ready( function () {
       { data: 'numero', name: 'numero' },
       { data: 'descripcion_general', name: 'descripcion_general' },
       { data: 'empresa', name: 'empresa' },
-      { data: 'solicitante', name: 'solicitante' },
+      { data: 'id_solicitante', name: 'id_solicitante' },
       { data: 'cotizador', name: 'cotizador' },
       { data: 'moneda', name: 'moneda' },
       { data: 'oc_recibida', name: 'oc_recibida' },
@@ -120,6 +121,7 @@ $(document).ready( function () {
       { data: 'factura_boreal', name: 'factura_boreal' },
       { data: 'fecha_entrega', name: 'fecha_entrega' },
       { data: 'oc_boreal', name: 'oc_boreal' },
+      { data: 'status', name: 'status' },
       {data: 'action', name: 'action', orderable: false},
     ],
     order: [[0, 'desc']]
@@ -248,7 +250,7 @@ $('#SubmitEditCotizacion').click(function(e) {
     }
   });
 });
-//--CODIGO PARA ELIMINAR ESTADO ---------------------//
+//--CODIGO PARA ELIMINAR LA PRECOTIZACION ---------------------//
 function deleteCotizacion(id){
   var id = id;
   Swal.fire({
@@ -275,6 +277,38 @@ function deleteCotizacion(id){
         },
         error: function (data) {
           Swal.fire({title: "Error del servidor", text:  "Cotización no eliminada", icon:  "error"});
+        }
+      });
+    }
+  })
+}
+//--CODIGO PARA CAMBIAR EL STATUS DE LA COTIZACION ---------------------//
+function changeStatusCotizacion(id){
+  var id = id;
+  Swal.fire({
+    title: '¿Estás seguro que desea el status de la cotización?',
+    text: "¡Los status varían entre EN ESPERA y PROCESAR, una vez cambiado a PROCESAR no se podrá editar o eliminar!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '¡Si, Cambiar!',
+    cancelButtonText: 'No, Cancelar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ajax
+      $.ajax({
+        type:"POST",
+        url: "cotizaciones/cambiar_status",
+        data: { id: id },
+        dataType: 'json',
+        success: function(response){
+          Swal.fire ( response.titulo ,  response.message ,  response.icono );
+          var oTable = $('#cotizaciones_table').dataTable();
+          oTable.fnDraw(false);
+        },
+        error: function (data) {
+          Swal.fire({title: "Error del servidor", text:  "Cotización no se le cambió el status", icon:  "error"});
         }
       });
     }

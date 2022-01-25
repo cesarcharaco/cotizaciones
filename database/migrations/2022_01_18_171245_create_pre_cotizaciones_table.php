@@ -19,7 +19,7 @@ class CreatePreCotizacionesTable extends Migration
             $table->integer('numero');
             $table->text('descripcion_general');
             $table->string('empresa');
-            $table->string('solicitante');
+            $table->unsignedBigInteger('id_solicitante');
             $table->string('cotizador');
             $table->enum('moneda',['Dolar','Euro','Lira'])->default('Dolar');
             $table->string('oc_recibida')->nullable();
@@ -28,6 +28,9 @@ class CreatePreCotizacionesTable extends Migration
             $table->integer('factura_boreal')->nullable();
             $table->string('fecha_entrega');
             $table->string('oc_boreal')->nullable();
+            $table->enum('status',['En Espera','Procesar'])->default('En Espera');
+
+            $table->foreign('id_solicitante')->references('id')->on('solicitantes');
             $table->timestamps();
         });
     }

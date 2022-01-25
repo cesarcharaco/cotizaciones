@@ -43,6 +43,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::get('/buscar_categorias',[ProductosController::class, 'buscar_categorias']);
 	Route::get('/productos/{id_producto}/buscar',[ProductosController::class,'buscar_producto']);
 	Route::post('/cotizaciones/calcular_item',[PreCotizacionesController::class,'calcular_item'])->name('cotizaciones.calcular_item');
+	Route::post('/cotizaciones/cambiar_status',[PreCotizacionesController::class,'cambiar_status'])->name('cotizaciones.cambiar_status');
 	
 
 	Route::resource('/cotizador',CotizadoresController::class);

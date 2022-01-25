@@ -32,8 +32,22 @@ class PreCotizacionesController extends Controller
                 ->addColumn('action', function ($row) {
                     $edit = '<a href="cotizaciones/'.$row->id.'/edit" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-pencil-alt"></i></a>';
                     $delete = ' <a href="javascript:void(0);" id="delete-cotizacion" onClick="deleteCotizacion('.$row->id.')" class="delete btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
-                    return $edit . $delete;
-                })->rawColumns(['action'])
+                    $change_status = ' <a href="javascript:void(0);" id="change_status-cotizacion" onClick="changeStatusCotizacion('.$row->id.')" class="delete btn btn-info btn-xs"><i class="fa fa-trash"></i></a>';
+                    if ($row->status=="En Espera") {
+                        return $edit . $delete . $change_status;
+                    }else{
+                        return $change_status;
+                    }
+                    
+                    
+                })
+                ->editColumn('id_solicitante',function($row){
+                    $sol=Solicitantes::find($row->id_solicitante);
+
+                    $solicitante=$sol->nombres." ".$sol->apellidos;
+                    return $solicitante;
+                })
+                ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -113,8 +127,8 @@ class PreCotizacionesController extends Controller
 
             if (!is_null($request->solicitante1)) {
                 # si no es nulo el solicitante seleccionado es de los registrados
-                $id_solicitante=$request->solicitante1;
                 $solicitante=Solicitantes::find($request->solicitante1);
+                $id_solicitante=$request->solicitante1;
 
             } else {
                 $solicitante=new Solicitantes();
@@ -132,7 +146,7 @@ class PreCotizacionesController extends Controller
             $pre_cotizacion->numero=$request->numero_cotizacion;
             $pre_cotizacion->descripcion_general=$request->descripcion_general;
             $pre_cotizacion->empresa=$empresa->nombre;
-            $pre_cotizacion->solicitante=$solicitante->nombres." ".$solicitante->apellidos;
+            $pre_cotizacion->id_solicitante=$id_solicitante;
             $pre_cotizacion->cotizador=$cotizador->cotizador;
             $pre_cotizacion->moneda=$request->moneda;
             $pre_cotizacion->oc_recibida=$request->oc_recibida;
@@ -143,7 +157,7 @@ class PreCotizacionesController extends Controller
             $pre_cotizacion->oc_boreal=$request->oc_boreal;
             $pre_cotizacion->save();
             //registrando cotizacion
-            $cotizacion=new Cotizaciones();
+            /*$cotizacion=new Cotizaciones();
             $cotizacion->fecha=date('Y-m-d');
             $cotizacion->numero_oc=$request->numero_oc;
             $cotizacion->descripcion_general=$request->descripcion_general;
@@ -156,7 +170,7 @@ class PreCotizacionesController extends Controller
             $cotizacion->factura_boreal=$request->factura_boreal;
             $cotizacion->fecha_entrega=$request->fecha_entrega;
             $cotizacion->oc_boreal=$request->oc_boreal;
-            $cotizacion->save();
+            $cotizacion->save();*/
 
             Alert::success('Excelente!!', 'Cotización registrada con éxito.')->persistent(true);
                 return redirect()->to('cotizaciones');
@@ -252,7 +266,14 @@ class PreCotizacionesController extends Controller
                 ->addColumn('action', function ($row) {
                     $agregar_item = '<a href="../cotizaciones/'.$row->id.'/agregar_items" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-plus"></i></a>';
                     
-                    return $agregar_item;
+                    if ($row->status=="En Espera") {
+                        return $agregar_item;    
+                    } else {
+                        # code...
+                    }
+                    
+                    
+                    
                 })->rawColumns(['action'])
                 ->editColumn('id_solicitante',function($row){
                     $solicitante=$row->nombres." ".$row->apellidos;
@@ -275,10 +296,44 @@ class PreCotizacionesController extends Controller
         $cotizacion=Cotizaciones::find($id_cotizacion);
         //dd($cotizacion);
         $categorias=Categorias::all();
-        $productos=Productos::where('status','Activo')->get();
         $tasas=Tasas::where('status','Activa')->where('moneda',$cotizacion->moneda)->first();
         $tasaiva=TasaIva::where('status_i','Activa')->first();
+        $items2=\DB::table('items')
+            ->join('productos','productos.id','=','items.id_producto')
+            ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
+            ->where('items.id_cotizacion',$id_cotizacion)
+            ->select(\DB::raw('sum(items.total_pp) AS monto_total'))->first();
+        if (is_null($items2)) {
+            $monto_total=0;
+        } else {
+            $monto_total=$items2->monto_total;
+        }
+        $productos1=Productos::where('status','Activo')->get();
+        $id_producto=array();
+        foreach ($productos1 as $key) {
+            $id_producto[]=$key->id;
+        }
+        //dd(count($id_producto));
+        $items3=\DB::table('items')
+            ->join('productos','productos.id','=','items.id_producto')
+            ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
+            ->where('items.id_cotizacion',$id_cotizacion)
+            ->select('items.id_producto')->get();
 
+        if (count($items3) > 0) {
+            foreach ($items3 as $key) {
+                for ($i=0; $i < count($id_producto); $i++) { 
+                    if ($id_producto[$i]==$key->id_producto) {
+                        unset($id_producto[$i]);
+                    }
+                }      
+            }
+            $productos=Productos::where('status','Activo')->whereIn('id',$id_producto)->get();
+        } else {
+            $productos=Productos::where('status','Activo')->whereIn('id',$id_producto)->get();
+        }
+        
+        //dd($productos);
         if(request()->ajax()) {
             
             $items=\DB::table('items')
@@ -312,7 +367,7 @@ class PreCotizacionesController extends Controller
             return redirect()->to('cotizaciones');
         }else{
 
-            return view('cotizaciones.partials.agregar_items',compact('cotizacion','productos','tasas','tasaiva','categorias'));
+            return view('cotizaciones.partials.agregar_items',compact('cotizacion','productos','tasas','tasaiva','categorias','monto_total'));
         }
     }
 
@@ -364,4 +419,37 @@ class PreCotizacionesController extends Controller
 
     }
     
+    public function cambiar_status(Request $request)
+    {
+        
+
+        $buscar=PreCotizaciones::find($request->id);
+        if ($buscar->status=="En Espera") {
+            $buscar->status="Procesar";
+        } else {
+            $buscar->status="En Espera";
+        }
+        $buscar->save();
+
+        $anio=substr($buscar->fecha,0,4);
+        $cotizador=Cotizadores::where('cotizador',$buscar->cotizador)->first();
+        
+        $cotizacion=new Cotizaciones();
+        $cotizacion->fecha=$buscar->fecha;
+        $cotizacion->numero_oc=$anio."-".$buscar->numero;
+        $cotizacion->descripcion_general=$buscar->descripcion_general;
+        $cotizacion->id_solicitante=$buscar->id_solicitante;
+        $cotizacion->id_cotizador=$cotizador->id;
+        $cotizacion->moneda=$buscar->moneda;
+        $cotizacion->oc_recibida=$buscar->oc_recibida;
+        $cotizacion->valor_total=$buscar->valor_total;
+        $cotizacion->guia_boreal=$buscar->guia_boreal;
+        $cotizacion->factura_boreal=$buscar->factura_boreal;
+        $cotizacion->fecha_entrega=$buscar->fecha_entrega;
+        $cotizacion->oc_boreal=$buscar->oc_boreal;
+        $cotizacion->save();
+
+        return response()->json(['message' => 'Status Cambiado de la Cotización','icono' => 'success', 'titulo' => 'Éxito']);
+
+    }    
 }

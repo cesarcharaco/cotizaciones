@@ -20,7 +20,7 @@
                         <option value="{{$p->id}}">{{$p->detalles}}</option>
                       @endforeach
                 </select>
-                <input type="text" name="id_cotizacion" id="id_cotizacion" value="{{$cotizacion->id}}">
+                <input type="hidden" name="id_cotizacion" id="id_cotizacion" value="{{$cotizacion->id}}">
               </div>
             </div>
           </div>

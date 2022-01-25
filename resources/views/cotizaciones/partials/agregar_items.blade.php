@@ -135,7 +135,15 @@
                       </div>
                   </div>
               </div>
-              
+              <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="monto_total_cotizacion">Monto Total de Cotización: </label>
+                        <span id="monto_total_cotizacion" style="color: red;">{{$monto_total}}</span> Pesos
+                        <input type="hidden" name="monto_total" id="monto_total" value="{{$monto_total}}">
+                      </div>
+                  </div>
+              </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="card-body">
@@ -159,6 +167,7 @@
                           <th>UTI x Unidad</th>
                           <th>UTI x Total</th>
                           <th>Boreal</th>
+                          <th>Status</th>
                           <th>Acciones</th> 
                         </tr>
                       </thead>
