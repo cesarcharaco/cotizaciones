@@ -286,7 +286,7 @@ function deleteCotizacion(id){
 function changeStatusCotizacion(id){
   var id = id;
   Swal.fire({
-    title: '¿Estás seguro que desea el status de la cotización?',
+    title: '¿Estás seguro que desea cambiar el status de la cotización?',
     text: "¡Los status varían entre EN ESPERA y PROCESAR, una vez cambiado a PROCESAR no se podrá editar o eliminar!",
     icon: 'warning',
     showCancelButton: true,

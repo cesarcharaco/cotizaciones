@@ -22,6 +22,7 @@
 <section class="content">
   <div class="container-fluid">
     @include('cotizaciones.partials.cargar_items')
+    @include('cotizaciones.partials.editar_items')
     <div class="row">
       <div class="col-md-12">
         <!-- Horizontal Form -->
@@ -97,53 +98,66 @@
               <div class="row">
                   <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="oc_recibida">OC Recibida: {{$cotizacion->oc_recibida}} </label>
-                    </div>
+                        <label for="oc_recibida">OC Recibida:  </label>
+                        <input type="text" name="oc_recibida" id="oc_recibida" class="form-control" placeholder="Ingrese la OC Recibida" value="{{$cotizacion->oc_recibida}}">
+                      </div>
+                      @error('oc_recibida')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="valor_total">Valor Total Venta Neto Ch$: {{$cotizacion->valor_total}} </label>
+                        <label for="valor_total">Valor Total Venta Neto: </label>
+                        <input type="text" name="valor_total" id="monto_total" readonly="readonly" value="{{$monto_total}}" class="form-control"> 
                       </div>
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label for="guia_boreal">Guía Boreal: {{$cotizacion->guia_boreal}} </label>
+                        <input type="text" name="guia_boreal" id="guia_boreal" class="form-control" placeholder="Ingrese la guía boreal">
                       </div>
+                      @error('guia_boreal')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
                   </div>
               </div>
               <div class="row">
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="factura_boreal">Factura Boreal: {{$cotizacion->factura_boreal}} </label>
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="fecha_entrega">Fecha de Entrega: {{$cotizacion->fecha_entrega}} </label>
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="oc_boreal">OC Boreal: {{$cotizacion->oc_boreal}} </label>
-                      </div>
-                  </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                      <label for="factura_boreal">Factura Boreal: {{$cotizacion->factura_boreal}} </label>
+                      <input type="text" name="factura_boreal" id="factura_boreal" class="form-control" placeholder="Ingrese el código de la Factura Boreal">
+                    </div>
+                    @error('factura_boreal')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                      <label for="fecha_entrega">Fecha de Entrega: <b style="color: red;">*</b></label>
+                      <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" min="{{$cotizacion->fecha_entrega}}" value="{{$cotizacion->fecha_entrega}}" >
+                    </div>
+                    @error('fecha_entrega')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                      <label for="oc_boreal">OC Boreal: </label>
+                      <input type="text" name="oc_boreal" id="oc_boreal" class="form-control"  placeholder="Ingrese la OC Boreal" value="{{$cotizacion->oc_boreal}}">
+                    </div>
+                    @error('oc_boreal')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
               </div>
               <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label for="agregar_items_cot">Para Agregar Items a la Cotización <button type="button" id="agregar" class="btn btn-success btn-sm" title="Click para agegar items"><i class="fa fa-plus"></i></button></label>
+                        <label for="agregar_items_cot">Para Agregar Items a la Cotización <button type="button" id="agregar" class="btn btn-success btn-sm" title="Click para agregar items"><i class="fa fa-plus"></i></button></label>
                       </div>
                   </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="monto_total_cotizacion">Monto Total de Cotización: </label>
-                        <span id="monto_total_cotizacion" style="color: red;">{{$monto_total}}</span> Pesos
-                        <input type="hidden" name="monto_total" id="monto_total" value="{{$monto_total}}">
-                      </div>
-                  </div>
-              </div>
+              
               <div class="row">
                 <div class="col-md-12">
                   <div class="card-body">
@@ -167,7 +181,6 @@
                           <th>UTI x Unidad</th>
                           <th>UTI x Total</th>
                           <th>Boreal</th>
-                          <th>Status</th>
                           <th>Acciones</th> 
                         </tr>
                       </thead>
@@ -323,6 +336,55 @@ function calcular_item() {
     }
   });
 }
+function calcular_item_e() {
+  //e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  var porc_uti=$("#porc_uti_e").val();
+  
+  $.ajax({
+    url: "{{ url('../../cotizaciones/calcular_item') }}",
+    method: 'post',
+    data: {
+      pda: $('#pda_e').val(),
+      moneda: $("#moneda_e").val(),
+      cant: $("#cant_e").val(),
+      traslado: $("#traslado_e").val(),
+      porc_uti: porc_uti,
+
+    },
+    success: function(result) {
+      
+      if(result.errors) {
+        
+        $('.alert-danger').html('');
+        $.each(result.errors, function(key, value) {
+          $('.alert-danger').show();
+          $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
+        });
+      } else {
+        $("#precio_unit_txt_e").text(result[0]);
+        $("#precio_unit_e").val(result[0]);
+        $("#total_pp_txt_e").text(result[1]);
+        $("#total_pp_e").val(result[1]);
+        $("#pp_ci_txt_e").text(result[2]);
+        $("#pp_ci_e").val(result[2]);
+        $("#pp_si_txt_e").text(result[3]);
+        $("#pp_si_e").val(result[3]);
+        $("#uti_x_und_txt_e").text(result[4]);
+        $("#uti_x_und_e").val(result[4]);
+        $("#uti_x_total_p_txt_e").text(result[5]);
+        $("#uti_x_total_p_e").val(result[5]);
+        $("#boreal_txt_e").text(result[6]);
+        $("#boreal_e").val(result[6]);
+        
+      }
+    }
+  });
+}
 $('#agregar').click(function () {
   $('#cargaItemsForm').trigger("reset");
   $('#cargar_item').modal({backdrop: 'static', keyboard: true, show: true});
@@ -370,8 +432,17 @@ $('#SubmitCargarItem').click(function(e) {
           $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
         });
       } else {
-        console.log(result);
+        
+        $("#productos").empty();
+        $("#productos").append('<option value="">Nuevo Producto</option>');
+        if (result.productos.length > 0) {
+          for(var i=0; i < result.productos.length; i++){
+          
+            $("#productos").append("<option value='"+result.productos[i].id+"'>"+result.productos[i].detalles+"</option>");
+          }
+        }
         $('.alert-danger').hide();
+        $("#monto_total").val(result.monto_total);
         var oTable = $('#items').dataTable();
         oTable.fnDraw(false);
         Swal.fire ( result.titulo ,  result.message ,  result.icono );
@@ -382,6 +453,137 @@ $('#SubmitCargarItem').click(function(e) {
     }
   });
 });
+function editCotizacion(id_item){
+  
+  //$('#editaItemsForm').trigger("reset");
+  $('#editar_item').modal({backdrop: 'static', keyboard: true, show: true});
+  $('.alert-danger').hide();
+  $.get('../../items/'+id_item+'/buscar', function (data) {
+    //console.log(data[0].porc_uti);
+    if(data.length > 0){
+      for(var i=0; i < data.length; i++){
+        $('#id_item').val(id_item);
+        $('#descripcion_e').val(data[i].detalles);
+        $('#id_categoria2_e').val(data[i].categoria);
+        $('#imagenes_e').attr('url',data[i].url);
+        $('#enlace1_web_e').val(data[i].enlace1_web);
+        $('#enlace2_web_e').val(data[i].enlace2_web);
+        $('#observacion_e').val(data[i].observacion);
+        $('#plazo_entrega_e').val(data[i].plazo_entrega);
+        $('#pda_e').val(data[i].pda);
+        $('#cant_e').val(data[i].cant);
+        $('#traslado_e').val(data[i].traslado);
+        //$('#porc_uti_e').val(data[i].porc_uti);
+        $("#porc_uti_e option[value="+ data[i].porc_uti +"]"). attr("selected",true);
+        $("#precio_unit_txt_e").text(data[i].precio_unit);
+        $("#precio_unit_e").val(data[i].precio_unit);
+        $("#total_pp_txt_e").text(data[i].total_pp);
+        $("#total_pp_e").val(data[i].total_pp);
+        $("#pp_ci_txt_e").text(data[i].pp_ci);
+        $("#pp_ci_e").val(data[i].pp_ci);
+        $("#pp_si_txt_e").text(data[i].pp_si);
+        $("#pp_si_e").val(data[i].pp_si);
+        $("#uti_x_und_txt_e").text(data[i].uti_x_und);
+        $("#uti_x_und_e").val(data[i].uti_x_und);
+        $("#uti_x_total_p_txt_e").text(data[i].uti_x_total_p);
+        $("#uti_x_total_p_e").val(data[i].uti_x_total_p);
+        $("#boreal_txt_e").text(data[i].boreal);
+        $("#boreal_e").val(data[i].boreal); 
+      }
+    }
+  })
+}
+
+$('#SubmitEditItem').click(function(e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
+  $.ajax({
+    url: "{{ route('items.editar') }}",
+    method: 'post',
+    data: {
+      enlace1_web: $('#enlace1_web_e').val(),
+      enlace2_web: $('#enlace2_web_e').val(),
+      observacion: $('#observacion_e').val(),
+      plazo_entrega: $('#plazo_entrega_e').val(),
+      pda: $('#pda_e').val(),
+      cant: $('#cant_e').val(),
+      traslado: $('#traslado_e').val(),
+      porc_uti: $('#porc_uti_e').val(),
+      precio_unit: $('#precio_unit_e').val(),
+      total_pp: $('#total_pp_e').val(),
+      pp_ci: $('#pp_ci_e').val(),
+      pp_si: $('#pp_si_e').val(),
+      uti_x_und: $('#uti_x_und_e').val(),
+      uti_x_total_p: $('#uti_x_total_p_e').val(),
+      boreal: $('#boreal_e').val(),
+      id_item: $("#id_item").val(),
+    },
+    success: function(result) {
+
+      if(result.errors) {
+        $('.alert-danger').html('');
+        $.each(result.errors, function(key, value) {
+          $('.alert-danger').show();
+          $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
+        });
+      } else {
+        //console.log(result);
+        $('.alert-danger').hide();
+        var oTable = $('#items').dataTable();
+        oTable.fnDraw(false);
+        Swal.fire ( result.titulo ,  result.message ,  result.icono );
+        if (result.icono=="success") {
+          $("#editar_item").modal('hide');
+        }
+      }
+    }
+  });
+});
+function deleteItemCotizacion(id_item){
+  
+  var id = id_item;
+  Swal.fire({
+    title: '¿Estás seguro que desea eliminar éste Item de la cotización?',
+    text: "¡Esta opción no podrá deshacerse en el futuro!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '¡Si, Eliminar!',
+    cancelButtonText: 'No, Cancelar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // ajax
+      $.ajax({
+        type:"DELETE",
+        url: "../../items/"+id+"",
+        data: { id: id },
+        dataType: 'json',
+        success: function(response){
+          $("#productos").empty();
+          $("#productos").append('<option value="">Nuevo Producto</option>');
+          if (response.productos.length > 0) {
+            for(var i=0; i < response.productos.length; i++){
+              $("#productos").append("<option value='"+response.productos[i].id+"'>"+response.productos[i].detalles+"</option>");
+            }
+          }
+          $("#monto_total").val(response.monto_total);
+          Swal.fire ( response.titulo ,  response.message ,  response.icono );
+          var oTable = $('#items').dataTable();
+          oTable.fnDraw(false);
+        },
+        error: function (data) {
+          Swal.fire({title: "Error del servidor", text:  "Item no eliminado de la Cotización", icon:  "error"});
+        }
+      });
+    }
+  })
+}
 
 </script>
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>

@@ -48,6 +48,8 @@
                   <th>Fecha</th>
                   <th>Número</th>
                   <th>Descripción General</th>
+                  <th>Status</th>
+                  <th>Status/COTI</th>
                   <th>Empresa</th>
                   <th>Solicitante</th>
                   <th>Cotizador</th>
@@ -102,6 +104,8 @@ $(document).ready( function () {
       { data: 'fecha', name: 'fecha' },
       { data: 'numero_oc', name: 'numero_oc' },
       { data: 'descripcion_general', name: 'descripcion_general' },
+      { data: 'status', name: 'status' },
+      { data: 'status2', name: 'status2' },
       { data: 'nombre', name: 'nombre' },
       { data: 'id_solicitante', name: 'id_solicitante' },
       { data: 'id_cotizador', name: 'id_cotizador' },

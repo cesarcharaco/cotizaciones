@@ -21,7 +21,7 @@ class CreatePreCotizacionesTable extends Migration
             $table->string('empresa');
             $table->unsignedBigInteger('id_solicitante');
             $table->string('cotizador');
-            $table->enum('moneda',['Dolar','Euro','Lira'])->default('Dolar');
+            $table->enum('moneda',['Dolar','Euro','Lira','Peso'])->default('Dolar');
             $table->string('oc_recibida')->nullable();
             $table->float('valor_total')->nullable();
             $table->integer('guia_boreal')->nullable();

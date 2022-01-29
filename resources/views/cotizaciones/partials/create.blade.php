@@ -136,6 +136,7 @@
                       <option value="Dolar">Dolar</option>
                       <option value="Euro">Euro</option>
                       <option value="Lira">Lira</option>
+                      <option value="Peso">Peso</option>
                     </select>
                   </div>
                   @error('moneda')
@@ -155,8 +156,8 @@
                   </div>
                   <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="valor_total">Valor Total Venta Neto Ch$ </label>
-                        <input type="text" name="valor_total" id="valor_total" class="form-control"placeholder="Ingrese el Valor Total Venta Neto Ch$" >
+                        <label for="valor_total">Valor Total Venta Neto</label>
+                        <input type="text" name="valor_total" id="valor_total" class="form-control"placeholder="Ingrese el Valor Total Venta Neto" >
                       </div>
                       @error('valor_total')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -176,7 +177,7 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label for="factura_boreal">Factura Boreal </label>
-                        <input type="text" name="factura_boreal" id="factura_boreal" class="form-control" placeholder="Ingrese el código de la Factua Boreal">
+                        <input type="text" name="factura_boreal" id="factura_boreal" class="form-control" placeholder="Ingrese el código de la Factura Boreal">
                       </div>
                       @error('factura_boreal')
                         <div class="alert alert-danger">{{ $message }}</div>
@@ -185,7 +186,7 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label for="fecha_entrega">Fecha de Entrega <b style="color: red;">*</b></label>
-                        <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" value="{{date('Y-m-d')}}" >
+                        <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" value="{{date('Y-m-d')}}" min="{{date('Y-m-d')}}">
                       </div>
                       @error('fecha_entrega')
                         <div class="alert alert-danger">{{ $message }}</div>

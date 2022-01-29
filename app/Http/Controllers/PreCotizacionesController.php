@@ -266,10 +266,10 @@ class PreCotizacionesController extends Controller
                 ->addColumn('action', function ($row) {
                     $agregar_item = '<a href="../cotizaciones/'.$row->id.'/agregar_items" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-plus"></i></a>';
                     
-                    if ($row->status=="En Espera") {
+                    if ($row->status=="Pendiente" && $row->status2=="ERP/COTI") {
                         return $agregar_item;    
                     } else {
-                        # code...
+                        return "----";
                     }
                     
                     
@@ -313,22 +313,23 @@ class PreCotizacionesController extends Controller
         foreach ($productos1 as $key) {
             $id_producto[]=$key->id;
         }
-        //dd(count($id_producto));
+        
         $items3=\DB::table('items')
             ->join('productos','productos.id','=','items.id_producto')
             ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
             ->where('items.id_cotizacion',$id_cotizacion)
             ->select('items.id_producto')->get();
-
+            
+            $id_producto2=array();
+            $id_producto3=array();
         if (count($items3) > 0) {
             foreach ($items3 as $key) {
-                for ($i=0; $i < count($id_producto); $i++) { 
-                    if ($id_producto[$i]==$key->id_producto) {
-                        unset($id_producto[$i]);
-                    }
-                }      
+                $id_producto2[]=$key->id_producto;
             }
-            $productos=Productos::where('status','Activo')->whereIn('id',$id_producto)->get();
+            $id_producto3=array_diff($id_producto, $id_producto2);
+
+        
+            $productos=Productos::where('status','Activo')->whereIn('id',$id_producto3)->get();
         } else {
             $productos=Productos::where('status','Activo')->whereIn('id',$id_producto)->get();
         }
@@ -345,8 +346,8 @@ class PreCotizacionesController extends Controller
 
             return datatables()->of($items)
                 ->addColumn('action', function ($row) {
-                    $edit = '<a href="cotizaciones/'.$row->id.'/edit" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editCotizacion"><i class="fa fa-pencil-alt"></i></a>';
-                    $delete = ' <a href="javascript:void(0);" id="delete-cotizacion" onClick="deleteCotizacion('.$row->id.')" class="delete btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
+                    $edit = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editItem"  onClick="editCotizacion('.$row->id.')"><i class="fa fa-pencil-alt"></i></a>';
+                    $delete = ' <a href="javascript:void(0);" id="delete-cotizacion" onClick="deleteItemCotizacion('.$row->id.')" class="delete btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
                     return $edit . $delete;
                 })
                 ->addColumn('url', function ($row) {

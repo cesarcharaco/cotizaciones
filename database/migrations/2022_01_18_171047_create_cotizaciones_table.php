@@ -20,14 +20,15 @@ class CreateCotizacionesTable extends Migration
             $table->text('descripcion_general');
             $table->unsignedBigInteger('id_solicitante');
             $table->unsignedBigInteger('id_cotizador');
-            $table->enum('moneda',['Dolar','Euro','Lira'])->default('Dolar');
+            $table->enum('moneda',['Dolar','Euro','Lira','Peso'])->default('Dolar');
             $table->string('oc_recibida')->nullable();
             $table->float('valor_total')->nullable();
             $table->integer('guia_boreal')->nullable();
             $table->integer('factura_boreal')->nullable();
             $table->date('fecha_entrega');
             $table->string('oc_boreal')->nullable();
-            $table->enum('status',['En Espera','Entregado','Entrega Parcial','En Proceso','ERP/OC','Adjudicada/OC','Contestada','ERP/COTI','Seleccionada a Usuario'])->default('En Espera');
+            $table->enum('status',['Pendiente','Contestada','Adjudicada','Negada','Expirada'])->default('Pendiente');
+            $table->enum('status2',['ERP/COTI','Lista para Contestar','En Análisis','Órden de Compra','Entrega Parcial','Entrega Completa','Finalizada'])->default('ERP/COTI');
             $table->timestamps();
         });
     }

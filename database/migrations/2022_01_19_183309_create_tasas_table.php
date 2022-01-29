@@ -16,7 +16,7 @@ class CreateTasasTable extends Migration
         Schema::create('tasas', function (Blueprint $table) {
             $table->id();
             $table->float('tasa');
-            $table->enum('moneda',['Dolar','Euro','Lira']);
+            $table->enum('moneda',['Dolar','Euro','Lira','Peso']);
             $table->date('fecha');
             $table->enum('status',['Activa','Inactiva'])->default('Activa');
             $table->timestamps();

@@ -29,6 +29,7 @@
                   <option value="Dolar">Dolar</option>
                   <option value="Euro">Euro</option>
                   <option value="Lira">Lira</option>
+                  <option value="Peso">Peso</option>
                 </select>
               </div>
               @error('moneda')
