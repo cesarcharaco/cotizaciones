@@ -23,4 +23,9 @@ class Solicitantes extends Model
     {
     	return $this->hasMany('App\Models\Cotizaciones','id_solicitante','id');
     }
+
+    public function pre_cotizaciones()
+    {
+        return $this->hasMany('App\Models\PreCotizaciones','id_solicitante','id');
+    }
 }

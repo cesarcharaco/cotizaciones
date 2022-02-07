@@ -1,8 +1,8 @@
-<div class="modal fade" id="edit_solicitantes">
+<div class="modal fade" id="edit_cotizadores">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title"><i class="nav-icon fa fa-shopping-basket"></i> Editar Solicitante</h4>
+        <h4 class="modal-title"><i class="nav-icon fa fa-shopping-basket"></i> Editar Cotizador</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -11,32 +11,32 @@
         
         <div class="modal-body">
            <p align="center"><small>Todos los campos <b style="color: red;">*</b> son requeridos.</small></p>
-           <input type="hidden" name="id_solicitante_x" value="" id="id_solicitante_edit" placeholder="" />
+           <input type="hidden" name="id_cotizador_x" value="" id="id_cotizador_edit" placeholder="" />
         <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
-                <label for="nombres">Nombres <b style="color: red;">*</b></label>
-                <input type="text" name="nombres" id="nombres_edit" class="form-control" required="required" placeholder="Ingrese los nombres del solicitante" >
+                <label for="cotizador">Nombres y Apellidos<b style="color: red;">*</b></label>
+                <input type="text" name="cotizador" id="cotizador_edit" class="form-control" required="required" placeholder="Ingrese los Nombres y Apellidos del cotizador" >
               </div>
-              @error('nombres')
+              @error('cotizador')
                 <div class="alert alert-danger">{{ $message }}</div>
               @enderror
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label for="apellidos">Apellidos <b style="color: red;">*</b></label>
-                <input type="text" name="apellidos" id="apellidos_edit" class="form-control" required="required" placeholder="Ingrese los apellidos del solicitante" >
+                <label for="rut">RUT <b style="color: red;">*</b></label>
+                <input type="text" name="rut" id="rut_edit" class="form-control" required="required" placeholder="Ingrese el RUT del cotizador" >
               </div>
-              @error('apellidos')
+              @error('rut')
                 <div class="alert alert-danger">{{ $message }}</div>
               @enderror
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label for="celular">Celular <b style="color: red;">*</b></label>
-                <input type="text" name="celular" id="celular_edit" class="form-control" required="required" placeholder="Ingrese el celular del solicitante" >
+                <label for="telefono">Celular <b style="color: red;">*</b></label>
+                <input type="text" name="telefono" id="telefono_edit" class="form-control" required="required" placeholder="Ingrese el teléfono del cotizador" >
               </div>
-              @error('celular')
+              @error('telefono')
                 <div class="alert alert-danger">{{ $message }}</div>
               @enderror
             </div>
@@ -45,28 +45,28 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="direccion">Dirección <b style="color: red;">*</b></label>
-                <textarea name="direccion" id="direccion_edit" class="form-control" required="required" placeholder="Ingrese la dirección del solicitante"  rows="6" cols="10"></textarea>
+                <label for="correo">Correo <b style="color: red;">*</b></label>
+                <input type="email"  name="correo" id="correo_edit" class="form-control" required="required" placeholder="Ingrese el correo del cotizador" >
               </div>
-              @error('direccion')
+              @error('correo')
                 <div class="alert alert-danger">{{ $message }}</div>
               @enderror
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="localidad">Localidad <b style="color: red;">*</b></label>
-                <textarea name="localidad" id="localidad_edit" class="form-control" required="required" placeholder="Ingrese la localidad del solicitante"  rows="6" cols="10"></textarea>
+                <label for="username">Nombre de Usuario: <b style="color: red;">*</b></label>
+                <input type="text" name="username" id="username_edit" class="form-control" required="required" placeholder="Ingrese la Nombre de Usuario del cotizador">
               </div>
-              @error('localidad')
+              @error('username')
                 <div class="alert alert-danger">{{ $message }}</div>
               @enderror
             </div>
-            
+            <small>Si desea resetear la clave: </small><input type="checkbox" name="reset_clave" id="reset_clave" value="1" title="Seleccione si desea resetear la clave">
           </div>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fa fa-times"></i>Cerrar</button>
-          <button type="submit" id="SubmitEditSolicitante" class="btn btn-info"><i class="fa fa-save"></i>Guardar</button>
+          <button type="submit" id="SubmitEditCotizador" class="btn btn-info"><i class="fa fa-save"></i>Guardar</button>
         </div>
       </form> 
     </div>

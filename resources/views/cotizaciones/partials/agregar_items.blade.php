@@ -27,7 +27,7 @@
       <div class="col-md-12">
         <!-- Horizontal Form -->
         <div class="card card-primary card-outline">
-          <form action="{{ route('cotizaciones.store') }}" class="form-horizontal" method="POST" autocomplete="off" name="productoForm" id="productoForm" enctype="Multipart/form-data" data-parsley-validate>
+          <form action="{{ route('cotizaciones.registrar') }}" class="form-horizontal" method="POST" autocomplete="off" name="productoForm" id="productoForm" enctype="Multipart/form-data" data-parsley-validate>
             @csrf
             <div class="card-header">
               <h3 class="card-title" style="margin-top: 5px;"><i class="nav-icon fa fa-shopping-basket"></i> Registro de Items</h3>
@@ -94,14 +94,37 @@
                   </div>
                 </div>  
               </div>
-              
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-check">
+                    <input type="checkbox" name="cargar_datosb" id="cargar_datosb" value="1" title="Seleccione si ya posee ya los provedores le dieron precio de los productos que cargará"  data-toggle="tooltip" data-placement="top" class="form-check-input">
+                    <label for="cargar_datosb">
+                      &nbsp;&nbsp;Ya posee la Guía y Órden de Compra de Boreal?
+                    </label><br>
+                    <small style="color: red">De ser así se procede a preparar el envío, para indicar, de los productos a enviar, aquellos que se entregarán, de ser así es obligatorio ingresar la OC Recibida</small>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                   <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="oc_recibida">OC Recibida:  </label>
-                        <input type="text" name="oc_recibida" id="oc_recibida" class="form-control" placeholder="Ingrese la OC Recibida" value="{{$cotizacion->oc_recibida}}">
+                        <label for="oc_recibida">OC Recibida:  
+                        <b id="ocr_obligatoria" style="display: none; color: red; position: sticky;" >*</b>
+                        </label>
+
+                        <input type="text" name="oc_recibida" id="oc_recibida" class="form-control" placeholder="Ingrese la OC Recibida" value="{{$cotizacion->oc_recibida}}"  value="{{$cotizacion->oc_recibida}}" @if($cotizacion->oc_recibida!="") readonly="readonly" @endif >
                       </div>
+                      <small style="color: red">Si ingresa la órden de compra del cliente, la cotización pasará a status 'En Proceso de Compra'</small>
                       @error('oc_recibida')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="fecha_entrega">Fecha de Entrega: <b style="color: red;">*</b></label>
+                        <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" min="{{$cotizacion->fecha_entrega}}" value="{{$cotizacion->fecha_entrega}}" >
+                      </div>
+                      @error('fecha_entrega')
                         <div class="alert alert-danger">{{ $message }}</div>
                       @enderror
                   </div>
@@ -111,17 +134,9 @@
                         <input type="text" name="valor_total" id="monto_total" readonly="readonly" value="{{$monto_total}}" class="form-control"> 
                       </div>
                   </div>
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="guia_boreal">Guía Boreal: {{$cotizacion->guia_boreal}} </label>
-                        <input type="text" name="guia_boreal" id="guia_boreal" class="form-control" placeholder="Ingrese la guía boreal">
-                      </div>
-                      @error('guia_boreal')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                      @enderror
-                  </div>
+
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-sm-4">
                   <div class="form-group">
                       <label for="factura_boreal">Factura Boreal: {{$cotizacion->factura_boreal}} </label>
@@ -131,32 +146,80 @@
                       <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                      <label for="fecha_entrega">Fecha de Entrega: <b style="color: red;">*</b></label>
-                      <input type="date" name="fecha_entrega" id="fecha_entrega" class="form-control" title ="Seleccione la fecha de entrega" required="required" min="{{$cotizacion->fecha_entrega}}" value="{{$cotizacion->fecha_entrega}}" >
-                    </div>
-                    @error('fecha_entrega')
-                      <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                      <label for="oc_boreal">OC Boreal: </label>
-                      <input type="text" name="oc_boreal" id="oc_boreal" class="form-control"  placeholder="Ingrese la OC Boreal" value="{{$cotizacion->oc_boreal}}">
-                    </div>
-                    @error('oc_boreal')
-                      <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
+              </div> -->
+              <!-- <div class="row">
+                <div class="col-sm-12">
+                  <label>Datos Boreal</label>
                 </div>
               </div>
+              @foreach($datosboreal as $key)
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="guia_boreal">Guía Boreal </label>
+                        <input type="text" name="guia_boreal" id="guia_boreal" class="form-control" placeholder="Ingrese el código de la guía boreal" value="{{$key->guia_boreal}}">
+                      </div>
+                      @error('guia_boreal')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="fecha_gb">Fecha de la Guía:</label>
+                        <input type="date" name="fecha_gb" id="fecha_gb" class="form-control" title="Ingrese la fecha de la guía boreal" value="{{$key->fecha_gb}}" min="{{$key->fecha_gb}}">
+                      </div>
+                      @error('fecha_gb')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="url_pdf_gb">PDF Guía Boreal:</label>
+                        <input type="file" name="url_pdf_gb" id="url_pdf_gb" class="form-control" placeholder="Ingrese el pdf de la guía boreal">
+                      </div>
+                      @error('url_pdf_gb')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="oc_boreal">OC Boreal </label>
+                        <input type="text" name="oc_boreal" id="oc_boreal" class="form-control" placeholder="Ingrese el código de la OC boreal" value="{{$key->oc_boreal}}">
+                      </div>
+                      @error('oc_boreal')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="fecha_ocb">Fecha de la Guía:</label>
+                        <input type="date" name="fecha_ocb" id="fecha_ocb" class="form-control" title="Ingrese la fecha de la OC boreal" value="{{$key->fecha_ocb}}" min="{{$key->fecha_ocb}}">
+                      </div>
+                      @error('fecha_ocb')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="url_pdf_ocb">PDF Guía Boreal:</label>
+                        <input type="file" name="url_pdf_ocb" id="url_pdf_ocb" class="form-control" placeholder="Ingrese el pdf de la OC boreal">
+                      </div>
+                      @error('url_pdf_ocb')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                      @enderror
+                  </div>
+                </div>
+              @endforeach
+              -->
               <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label for="agregar_items_cot">Para Agregar Items a la Cotización <button type="button" id="agregar" class="btn btn-success btn-sm" title="Click para agregar items"><i class="fa fa-plus"></i></button></label>
                       </div>
                   </div>
-              </div>
+              </div> 
               
               <div class="row">
                 <div class="col-md-12">
@@ -212,10 +275,10 @@
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-
+$.fn.DataTable.ext.errMode='throw';
   var id_cotizacion=$("#id_cotizacion").val();
   
-  $('#items').DataTable({
+  var table=$('#items').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -249,6 +312,7 @@
     ],
     order: [[0, 'desc']]
   });
+  table.ajax.reload();
 });
  $("#productos").on('change',function (event) {
     var id_producto=$(this).val();
@@ -398,6 +462,7 @@ $('#SubmitCargarItem').click(function(e) {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
+  console.log('...........');
   $.ajax({
     url: "{{ route('items.store') }}",
     method: 'post',
@@ -584,7 +649,16 @@ function deleteItemCotizacion(id_item){
     }
   })
 }
-
+$("#cargar_datosb").on('change', function (event) {
+    if ($(this).is(':checked')) {
+      $("#oc_recibida").attr('required',true);
+      $("#ocr_obligatoria").css('display','block');
+      
+    }else{
+      $("#oc_recibida").removeAttr('required');
+      $("#ocr_obligatoria").css('display','none');
+    }
+});
 </script>
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 @endsection

@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Cotizadores','id_usuario','id');
     }
+
+    public function historial()
+    {
+        return $this->hasMany('App\Models\Historial','id_usuario','id');
+    }
 }

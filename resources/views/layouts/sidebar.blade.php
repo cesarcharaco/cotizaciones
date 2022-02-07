@@ -14,7 +14,7 @@
           <img src="{!! asset('img/avatar.jpg') !!}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="{{ route('home')}}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -36,17 +36,24 @@
           <li class="nav-item">
             <a href="{!!route('home')!!}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Home <span class="right badge badge-danger">New</span></p>
+              <p>Home <!-- <span class="right badge badge-danger">New</span> --></p>
             </a>
           </li>
           
-          
+          @if(Auth::user()->user_type=="Admin")
           <li class="nav-item">
             <a href="{!!route('solicitantes.index')!!}" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>Solicitantes</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{!!route('cotizadores.index')!!}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>Cotizadores</p>
+            </a>
+          </li>
+          @endif
           <li class="nav-item">
             <a href="{!!route('productos.index')!!}" class="nav-link">
               <i class="nav-icon fa fa-shopping-basket"></i>
@@ -65,6 +72,7 @@
               <p>Cotizaciones</p>
             </a>
           </li>
+          @if(Auth::user()->user_type=="Admin")
           <li class="nav-item">
             <a href="{!!route('tasas.index')!!}" class="nav-link">
               <i class="nav-icon fa fa-chart-line"></i>
@@ -77,6 +85,7 @@
               <p>Tasas de IVA</p>
             </a>
           </li>
+          @endif
         </ul>
 
       </nav>

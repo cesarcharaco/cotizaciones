@@ -12,4 +12,9 @@ class PreCotizaciones extends Model
     protected $table='pre_cotizaciones';
     
      protected $fillable=['fecha','numero','descripcion_general','empresa','id_solicitante','cotizador','moneda','oc_recibida','valor_total','guia_boreal','factura_boreal','fecha_entrega','oc_boreal'];
+
+     public function solicitante()
+     {
+     	return $this->belongsTo('App\Models\Solicitantes','id_solicitante');
+     }
 }

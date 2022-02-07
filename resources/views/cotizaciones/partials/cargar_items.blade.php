@@ -51,7 +51,7 @@
               <label for="descripcion">Imagen </label>
               <div class="input-group">
                   <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="imagenes" name="imagenes[]" accept="image/jpeg,image/jpg,image/png">
+                      <input type="file" class="custom-file-input" id="imagenes" name="imagenes" accept="image/jpeg,image/jpg,image/png">
                       <label class="custom-file-label" for="imagenes">Seleccionar archivo...</label>
                     </div>
                   </div>

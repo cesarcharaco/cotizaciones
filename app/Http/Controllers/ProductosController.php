@@ -119,15 +119,15 @@ class ProductosController extends Controller
                 
                 //cargando imagenes
                 $imagenes=$request->file('imagenes');
-                foreach($imagenes as $imagen){
+                //foreach($imagenes as $imagen){
                     $codigo=$this->generarCodigo();
                     /*
                     $validatedData = $request->validate([
                         'imagenes' => 'mimes:jpeg,png'
                     ]);*/
                     
-                    $name=$codigo."_".$imagen->getClientOriginalName();
-                    $imagen->move(public_path().'/img_productos', $name);  
+                    $name=$codigo."_".$imagenes->getClientOriginalName();
+                    $imagenes->move(public_path().'/img_productos', $name);  
                     $url ='img_productos/'.$name;
                     $img=new Imagenes();
                     $img->id_producto=$producto->id;
@@ -135,7 +135,7 @@ class ProductosController extends Controller
                     $img->url=$url;
                     $img->save();
 
-                }
+                //}
                 Alert::success('Muy bien', 'Producto registrado con éxito.')->persistent(true);
                 return redirect()->to('productos');                
             
@@ -228,11 +228,11 @@ class ProductosController extends Controller
                     if($request->imagenes!=null){
                         //cargando imagenes
                     $imagenes=$request->file('imagenes');
-                        foreach($imagenes as $imagen){
+                        //foreach($imagenes as $imagen){
                             $codigo=$this->generarCodigo();
                             
-                            $name=$codigo."_".$imagen->getClientOriginalName();
-                            $imagen->move(public_path().'/img_productos', $name);  
+                            $name=$codigo."_".$imagenes->getClientOriginalName();
+                            $imagenes->move(public_path().'/img_productos', $name);  
                             $url ='img_productos/'.$name;
                             $img=new Imagenes();
                             $img->id_producto=$producto->id;
@@ -240,8 +240,8 @@ class ProductosController extends Controller
                             $img->url=$url;
                             $img->save();
 
-                            $producto->imagenes()->attach($img);
-                        }
+                            //$producto->imagenes()->attach($img);
+                        //}
 
                     }
                      return response()->json(['message'=>"Producto ".$producto->codigo." - ".$request->detalles." actualizado con éxito",'icono'=>'success','titulo'=>'Éxito']);

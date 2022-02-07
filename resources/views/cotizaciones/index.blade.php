@@ -53,6 +53,7 @@
             <table id="cotizaciones_table" class="table table-bordered table-striped table-sm" style="font-size: 12px;">
               <thead>
                 <tr>
+                  <th>Status</th>
                   <th>Fecha</th>
                   <th>Número</th>
                   <th>Descripción General</th>
@@ -61,12 +62,11 @@
                   <th>Cotizador</th>
                   <th>Moneda</th>
                   <th>OC Recibida</th>
-                  <th>Valor Total Venta Neto Ch$</th>
+                  <th>Valor Total Venta Neto</th>
                   <th>Guía Boreal</th>
                   <th>Factura Boreal</th>
                   <th>Fecha Entrega</th>
                   <th>OC Boreal</th>
-                  <th>Status</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -99,7 +99,10 @@ $(document).ready( function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  $('#cotizaciones_table').DataTable({
+  $.fn.DataTable.ext.errMode='throw';
+
+  
+  var table =$('#cotizaciones_table').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -108,6 +111,7 @@ $(document).ready( function () {
       url:"{{ url('cotizaciones') }}"
    },
     columns: [
+      { data: 'status', name: 'status' },
       { data: 'fecha', name: 'fecha' },
       { data: 'numero', name: 'numero' },
       { data: 'descripcion_general', name: 'descripcion_general' },
@@ -121,11 +125,11 @@ $(document).ready( function () {
       { data: 'factura_boreal', name: 'factura_boreal' },
       { data: 'fecha_entrega', name: 'fecha_entrega' },
       { data: 'oc_boreal', name: 'oc_boreal' },
-      { data: 'status', name: 'status' },
       {data: 'action', name: 'action', orderable: false},
     ],
     order: [[0, 'desc']]
   });
+table.ajax.reload();
 });
 //--CODIGO PARA CREAR ESTADOS (LEVANTAR EL MODAL) ---------------------//
 $('#createNewCotizacion').click(function () {
@@ -286,8 +290,8 @@ function deleteCotizacion(id){
 function changeStatusCotizacion(id){
   var id = id;
   Swal.fire({
-    title: '¿Estás seguro que desea cambiar el status de la cotización?',
-    text: "¡Los status varían entre EN ESPERA y PROCESAR, una vez cambiado a PROCESAR no se podrá editar o eliminar!",
+    title: '¿Estás seguro que desea Procesar de la cotización?',
+    text: "¡El status cambiará a PROCESAR, una vez cambiado no se podrá editar o eliminar de ésta lista!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',

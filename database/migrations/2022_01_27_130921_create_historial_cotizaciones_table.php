@@ -16,9 +16,9 @@ class CreateHistorialCotizacionesTable extends Migration
         Schema::create('historial_cotizaciones', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_usuario');
-            $table->enum('operacion',['Registro de Cotización','Edición de Cotización','Eliminación de Cotización','Cambio de Items','Cancelación de Cotización','Otro']);
-            $table->unsignedBigInteger('id_cotizacion');
-            $table->text('observacion');
+            $table->enum('operacion',['Registro de Cotización','Edición de Cotización','Eliminación de Cotización','Cambio de Items','Cancelación de Cotización','Otro'])->default('Otro');
+            $table->integer('id_cotizacion')->nullable();
+            $table->text('observacion')->nullable();
             $table->timestamps();
         });
     }

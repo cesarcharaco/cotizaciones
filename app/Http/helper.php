@@ -80,3 +80,59 @@ function exit_product2($id_producto){
 
         return $i;
 }
+
+function precot_espera(){
+    
+    $buscar=App\Models\PreCotizaciones::where('status','En Espera')->count();
+
+    return $buscar;
+}
+
+function cot_pendientes(){
+    
+    $buscar=App\Models\Cotizaciones::where('status','Pendiente')->count();
+
+    return $buscar;
+}
+
+function cot_epc(){
+    
+    $buscar=App\Models\Cotizaciones::where('status2','En Proceso de Compra')->count();
+    //dd($buscar);
+    return $buscar;
+}
+
+function cot_finalizadas(){
+    $hoy=date('Y-m-d');
+    $buscar=App\Models\Cotizaciones::where('status2','Finalizada')->where('fecha',$hoy)->count();
+
+    return $buscar;
+}
+function codigo_en_uso()
+{
+    if (\Auth::getUser()->user_type=="Admin") {
+        $id_user=0;
+    } else {
+        $id_user=\Auth::getUser()->id;
+    }
+    
+
+    $buscar=\DB::table('correlativos_cotizaciones')
+            ->where('id_usuario',$id_user)
+            ->where('status','No Disponible')
+            ->select('correlativos_cotizaciones.*')
+            ->get();
+    $numero="Ninguno";
+    if (count($buscar) > 0) {
+        foreach ($buscar as $key) {
+            $encontrar=App\Models\PreCotizaciones::where('numero',$key->numero_cotizacion)->count();
+            if($encontrar ==0){
+                $numero=$key->numero_cotizacion;
+            }
+        }
+        return $numero;
+    } else {
+        return $numero;
+    }
+    
+}

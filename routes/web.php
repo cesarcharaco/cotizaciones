@@ -46,8 +46,16 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::post('/cotizaciones/cambiar_status',[PreCotizacionesController::class,'cambiar_status'])->name('cotizaciones.cambiar_status');
 	Route::get('/items/{id_item}/buscar',[ItemController::class,'buscar_item']);
 	Route::post('/items/editar',[ItemController::class,'editar'])->name('items.editar');
+	Route::post('/cotizaciones/registrar',[PreCotizacionesController::class,'registrar'])->name('cotizaciones.registrar');
+	Route::get('cotizaciones/{id_cotizacion}/preparar_envio',[PreCotizacionesController::class,'preparar_envio'])->name('cotizaciones.preparar_envio');
+	Route::post('cotizaciones/rechazar_codigo',[PreCotizacionesController::class,'rechazar_codigo'])->name('cotizaciones.rechazar_codigo');
+	Route::get('cotizaciones/en_espera',[PreCotizacionesController::class,'en_espera'])->name('cotizaciones.en_espera');
+	Route::get('cotizaciones/en_proceso',[PreCotizacionesController::class,'en_proceso'])->name('cotizaciones.en_proceso');
+	Route::get('cotizaciones/{id_cotizacion}/contestada',[PreCotizacionesController::class,'contestada'])->name('cotizaciones.contestada');
+	Route::post('cotizaciones/registrar_respuesta',[PreCotizacionesController::class,'registrar_respuesta'])->name('cotizaciones.registrar_respuesta');
+	Route::post('cotizaciones/status',[PreCotizacionesController::class,'status'])->name('cotizaciones.status');
 
-	Route::resource('/cotizador',CotizadoresController::class);
+	Route::resource('/cotizadores',CotizadoresController::class);
 	Route::resource('/solicitantes',SolicitantesController::class);
 	Route::resource('/cotizaciones',PreCotizacionesController::class);
 	Route::resource('/productos',ProductosController::class);

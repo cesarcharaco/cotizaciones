@@ -25,28 +25,39 @@ class HomeController extends Controller
     public function index()
     {
         $hoy=date('Y-m-d');
-        $buscar1=Correlativos::all();
-        if (count($buscar1)==0) {
-            $c=new Correlativos();
-            $c->numero_cotizacion=8516;
-            $c->fecha="2022-01-18";
-            $c->save();
-        }
-        $buscar=Correlativos::where('fecha',$hoy)->count();
-        if ($buscar == 0) {
-            
-            $cot=Correlativos::orderBy('id','DESC')->first();
-            if(is_null($cot)){
-                $inicio=0;
-            }else{
-                $inicio=$cot->numero_cotizacion;
-            }
+        $buscar=Correlativos::all();
+        if (count($buscar) == 0) {
+            $inicio=8516;
             //generando numeros
             for ($i=1; $i <= 26 ; $i++) { 
                 $correlativo=new Correlativos();
                 $correlativo->numero_cotizacion=$inicio+$i;
                 $correlativo->fecha=$hoy;
                 $correlativo->save();
+            }
+        }else{
+            $buscar=Correlativos::where('status','Disponible')->count();
+            if($buscar==0){
+                $cot=Correlativos::orderBy('id','DESC')->first();
+                for ($i=1; $i <= 26 ; $i++) { 
+                $correlativo=new Correlativos();
+                $correlativo->numero_cotizacion=$cot->numero_cotizacion+$i;
+                $correlativo->fecha=$hoy;
+                $correlativo->save();
+            }
+
+            }else{
+                if ($buscar <= 6) {
+                    $fin=26-$buscar;
+                    $cot=Correlativos::orderBy('id','DESC')->first();
+                    for ($i=1; $i <= $fin ; $i++) { 
+                        $correlativo=new Correlativos();
+                        $correlativo->numero_cotizacion=$cot->numero_cotizacion+$i;
+                        $correlativo->fecha=$hoy;
+                        $correlativo->save();
+                    }
+                }
+
             }
         }
         

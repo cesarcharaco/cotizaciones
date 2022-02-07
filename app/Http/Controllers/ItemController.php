@@ -60,17 +60,17 @@ class ItemController extends Controller
             $imagenes=$request->file('imagenes');
 
             if (!is_null($imagenes)) {
-                foreach($imagenes as $imagen){
+                //foreach($imagenes as $imagen){
                     $codigo=$this->generarCodigo();
-                    $name=$codigo."_".$imagen->getClientOriginalName();
-                    $imagen->move(public_path().'/img_productos', $name);  
+                    $name=$codigo."_".$imagenes->getClientOriginalName();
+                    $imagenes->move(public_path().'/img_productos', $name);  
                     $url ='img_productos/'.$name;
                     $img=new Imagenes();
                     $img->id_producto=$producto->id;
                     $img->nombre=$name;
                     $img->url=$url;
                     $img->save();
-                }
+                //}
             }
             
         }else{

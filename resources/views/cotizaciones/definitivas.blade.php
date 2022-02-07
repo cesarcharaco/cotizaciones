@@ -18,6 +18,7 @@
 </div>
 <section class="content">
   <div class="container-fluid">
+    @include('cotizaciones.partials.status')
     <div class="row">
       <div class="col-12">
         <div class="card card-primary card-outline card-tabs">
@@ -55,11 +56,9 @@
                   <th>Cotizador</th>
                   <th>Moneda</th>
                   <th>OC Recibida</th>
-                  <th>Valor Total Venta Neto Ch$</th>
-                  <th>Guía Boreal</th>
+                  <th>Valor Total Venta Neto</th>
                   <th>Factura Boreal</th>
                   <th>Fecha Entrega</th>
-                  <th>OC Boreal</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -92,7 +91,8 @@ $(document).ready( function () {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  $('#cotizaciones_d_table').DataTable({
+  $.fn.DataTable.ext.errMode='throw';
+  var table=$('#cotizaciones_d_table').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -112,16 +112,14 @@ $(document).ready( function () {
       { data: 'moneda', name: 'moneda' },
       { data: 'oc_recibida', name: 'oc_recibida' },
       { data: 'valor_total', name: 'valor_total' },
-      { data: 'guia_boreal', name: 'guia_boreal' },
       { data: 'factura_boreal', name: 'factura_boreal' },
       { data: 'fecha_entrega', name: 'fecha_entrega' },
-      { data: 'oc_boreal', name: 'oc_boreal' },
       {data: 'action', name: 'action', orderable: false},
     ],
     order: [[0, 'desc']]
   });
+table.ajax.reload();
 });
-
 //--CODIGO PARA ELIMINAR ESTADO ---------------------//
 function deleteCotizacion(id){
   var id = id;
@@ -154,6 +152,48 @@ function deleteCotizacion(id){
     }
   })
 }
+function changeStatusCotizacion(id_cotizacion) {
+  $("#id_cotizacion_status").val(id_cotizacion);
+  $('#changeStatusForm').trigger("reset");
+  $('#status_cotizacion').modal({backdrop: 'static', keyboard: true, show: true});
+  $('.alert-danger').hide();
+}
+$('#SubmitStatusCotizacion').click(function(e) {
+  e.preventDefault();
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+  $.ajax({
+    url: "{{ route('cotizaciones.status') }}",
+    method: 'post',
+    data: {
+      status: $('#status').val(),
+      observacion: $('#observacion').val(),
+      id_cotizacion: $("#id_cotizacion_status").val()
+    },
+    success: function(result) {
+      console.log(result);
+      if(result.errors) {
+        $('.alert-danger').html('');
+        $.each(result.errors, function(key, value) {
+          $('.alert-danger').show();
+          $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
+        });
+      } else {
+        $('.alert-danger').hide();
+        var oTable = $('#cotizaciones_d_table').dataTable();
+        oTable.fnDraw(false);
+        Swal.fire ( result.titulo ,  result.message ,  result.icono );
+        if (result.icono=="success") {
+          $("#status_cotizacion").modal('hide');
+        }
+      }
+    }
+  });
+});
+
 </script>
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 @endsection

@@ -33,6 +33,8 @@ class CreateItemsTable extends Migration
             $table->float('uti_x_total_p');
             $table->float('boreal');
             $table->unsignedBigInteger('id_cotizacion');
+            $table->enum('enviado',['Si','No'])->default('No');
+            $table->integer('cant_enviado')->default(0);
 
             $table->foreign('id_producto')->references('id')->on('productos');
             $table->foreign('id_cotizacion')->references('id')->on('cotizaciones');
