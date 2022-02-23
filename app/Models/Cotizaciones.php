@@ -10,7 +10,7 @@ class Cotizaciones extends Model
     use HasFactory;
     protected $table='cotizaciones';
     
-     protected $fillable=['fecha','numero_oc','descripcion_general','id_solicitante','id_cotizador','moneda','oc_recibida','valor_total','factura_boreal','fecha_entrega'];
+     protected $fillable=['fecha','numero_oc','descripcion_general','id_solicitante','id_cotizador','moneda','oc_recibida','valor_total','factura_boreal','fecha_entrega','lugar_entrega'];
 
      public function solicitantes(){
 

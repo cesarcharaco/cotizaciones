@@ -27,6 +27,7 @@ class CreateCotizacionesTable extends Migration
             $table->date('fecha_entrega');
             $table->enum('status',['Pendiente','Contestada','Adjudicada','Negada','Expirada'])->default('Pendiente');
             $table->enum('status2',['ERP/COTI','Lista para Contestar','En Análisis','En Proceso de Compra','Entrega Parcial','Entrega Completa','Finalizada'])->default('ERP/COTI');
+            $table->string('lugar_entrega')->nullable();
             $table->timestamps();
             //el status Por Cargar Items solo sele dará cuando
             //se tengan factura boreal o OC Recibida para pasar a cargar items y de allí a finalizar 

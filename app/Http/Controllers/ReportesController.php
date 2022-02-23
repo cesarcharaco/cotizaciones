@@ -16,10 +16,18 @@ use App\Models\Tasas;
 use App\Models\TasaIva;
 use PDF;
 use Alerts;
+ini_set('max_execution_time', '3600');
 class ReportesController extends Controller
 {
     public function generar_reporte_envio($id_cotizacion)
     {
-    	dd($id_cotizacion);
+    	//dd($id_cotizacion);
+
+    	/*$pdf = PDF::loadView('reports/pdf/advertising', array('advertising'=>$advertising));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('advertising-'.date('d-m-Y').'.pdf');*/
+        $pdf = PDF::loadView('reportes/envio');
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream('ReporteCotizacion-'.date('d-m-Y').'.pdf');
     }
 }

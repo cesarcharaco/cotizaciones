@@ -9,6 +9,7 @@ use App\Http\Controllers\PreCotizacionesController;
 use App\Http\Controllers\TasasController;
 use App\Http\Controllers\TasaIvaController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ReportesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::get('cotizaciones/{id_cotizacion}/contestada',[PreCotizacionesController::class,'contestada'])->name('cotizaciones.contestada');
 	Route::post('cotizaciones/registrar_respuesta',[PreCotizacionesController::class,'registrar_respuesta'])->name('cotizaciones.registrar_respuesta');
 	Route::post('cotizaciones/status',[PreCotizacionesController::class,'status'])->name('cotizaciones.status');
+	Route::get('cotizaciones/{id_cotizacion}/generar_reporte_envio',[ReportesController::class,'generar_reporte_envio'])->name('cotizaciones.generar_reporte_envio');
 
 	Route::resource('/cotizadores',CotizadoresController::class);
 	Route::resource('/solicitantes',SolicitantesController::class);

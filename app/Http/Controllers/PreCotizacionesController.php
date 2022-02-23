@@ -802,6 +802,7 @@ class PreCotizacionesController extends Controller
                     $cot->oc_recibida=$request->oc_recibida;
                     $cot->fecha_entrega=$request->fecha_entrega;
                     $cot->valor_total=$request->valor_total;
+                    $cot->lugar_entrega=$request->lugar_entrega;
                     
                     //registrando datos boreales
                     $datosboreal= new DatosBoreal();

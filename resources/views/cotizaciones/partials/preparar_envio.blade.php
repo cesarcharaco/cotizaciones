@@ -94,7 +94,14 @@
                   </div>
                 </div>  
               </div>
-              
+              @if($cotizacion->status2!="Lista para Contestar")
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="lugar_entrega">Lugar de Entrega</label>
+                  <input type="text" name="lugar_entrega" id="lugar_entrega" title="Ingrese el lugar d entrega de los productos" placeholder="Ej: Av. X calle A" class="form-control">
+                </div>
+              </div>
+              @endif
               <div class="row">
                 @if($cotizacion->status2!="Lista para Contestar")
                   <div class="col-sm-4">
@@ -110,7 +117,7 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                         <label for="oc_recibida">Modo de Responder:</label><br>
-                        <a href="" class="btn btn-primary btn-sm" title="Descarga el pdf para enviarlo por correo electronico"><i class="fas fa-download"></i> Descargar PDF</a>
+                        <a href="{{ route('cotizaciones.generar_reporte_envio',$cotizacion->id)}}" target="_blank" class="btn btn-primary btn-sm" title="Descarga el pdf para enviarlo por correo electronico"><i class="fas fa-download"></i> Descargar PDF</a>
                         <a href="#" onclick="respuestaViaTelefonica(<?=$cotizacion->id?>)" class="btn btn-success btn-sm" title="Presione si responderá Vía Telefónica"><i class="fas fa-phone"></i> Vía Telefónica</a>
 
                     </div>
