@@ -68,14 +68,14 @@
         <?php $image_path = '/img/banner_pdf.png'; ?>
         <img src="{{ public_path() . $image_path }}" class="logo">
       </td>
-      <td align="right">
-        <!-- <b>
+      <td align="left">
+        <b>
           Reporte de Envio <br>
           Boreal<br>
           mmmmmmmmmmmmmmmmm<br>
           NIT: 222222222222222<br>
           Fecha: <?php //echo date('d/m/Y g:i:s A'); ?>
-        </b> -->
+        </b>
       </td>
     </tr>
   </table>
