@@ -357,10 +357,10 @@ class PreCotizacionesController extends Controller
                     }
                     
                     if($row->status2=="Entrega Parcial" ){
-                        return $ver_datos;
+                        return $ver_datos." ".$enviar;
                     }
                     if($row->status2=="Entrega Completa" ){
-                        return $ver_datos;
+                        return $ver_datos." ".$enviar;
                     }
                     
                     
