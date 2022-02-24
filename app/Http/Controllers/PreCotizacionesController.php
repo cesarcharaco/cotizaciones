@@ -337,6 +337,7 @@ class PreCotizacionesController extends Controller
                     $ver_datos= ' <a href="javascript:void(0);" id="ver_datos_boreal" onClick="verDatosBoreal('.$row->id.')" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a>';
 
                     $change_status = ' <a href="javascript:void(0);" id="change_status-cotizacion" onClick="changeStatusCotizacion('.$row->id.')" class="delete btn btn-info btn-xs"><i class="fa fa-bug"></i></a>';
+                    $descargar='<a href="../cotizaciones/'.$row->id.'/generar_reporte_envio" target="_blank" class="btn btn-primary btn-xs" title="Descarga el pdf para enviarlo por correo electronico"><i class="fas fa-download"></i></a>';
                     if ($row->status2=="ERP/COTI") {
                         
                         return $agregar_item;    
@@ -346,7 +347,7 @@ class PreCotizacionesController extends Controller
                         return $enviar;
                     }
                     if ($row->status2=="En Análisis") {
-                        return $change_status;
+                        return $change_status." ".$descargar;
                     }
                     if ($row->status2=="En Proceso de Compra") {
                         return $enviar;

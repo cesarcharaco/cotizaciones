@@ -22,6 +22,13 @@ class ReportesController extends Controller
     public function generar_reporte_envio($id_cotizacion)
     {
     	//dd($id_cotizacion);
+        $cot=Cotizaciones::find($id_cotizacion);
+        if ($cot->status2=='Lista para Contestar') {
+            $cot->status="Contestada";
+            $cot->status2="En Análisis";
+            $cot->save();
+        }
+        
         $cotizacion=\DB::table('cotizaciones')
                     ->join('solicitantes','solicitantes.id','=','cotizaciones.id_solicitante')
                     ->join('cotizadores','cotizadores.id','=','cotizaciones.id_cotizador')
