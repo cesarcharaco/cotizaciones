@@ -20,17 +20,18 @@
     </tr>      
   </thead>
   <tbody>
-  	@for($i=1;$i < 100; $i++)
+    <?php $i=1; ?>
+  	@foreach($items as $key)
   		<tr style=" font-size: 8; ">
-  			<td style="background-color: #DADADA;">{{$i}}</td>
-  			<td align="justify"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. </td>
+  			<td style="background-color: #DADADA;">{{$i++}}</td>
+  			<td align="justify">{{$key->detalles}}</td>
   			<td style="background-color: #DADADA"></td>
-  			<td></td>
-  			<td style="background-color: #DADADA"></td>
-  			<td></td>
-  			<td style="background-color: #DADADA"></td>
+  			<td>{{$key->plazo_entrega}}</td>
+  			<td style="background-color: #DADADA">{{$key->cant}}</td>
+  			<td>{{$key->precio_unit}}</td>
+  			<td style="background-color: #DADADA">{{$key->total_pp}}</td>
   		</tr>
-  	@endfor
+  	@endforeach
   </tbody>
   </table>
 @endsection

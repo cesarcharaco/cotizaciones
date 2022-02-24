@@ -22,11 +22,24 @@ class ReportesController extends Controller
     public function generar_reporte_envio($id_cotizacion)
     {
     	//dd($id_cotizacion);
+        $cotizacion=\DB::table('cotizaciones')
+                    ->join('solicitantes','solicitantes.id','=','cotizaciones.id_solicitante')
+                    ->join('cotizadores','cotizadores.id','=','cotizaciones.id_cotizador')
+                    ->where('cotizaciones.id','=',$id_cotizacion)
+                    ->select('cotizaciones.*','solicitantes.nombres','solicitantes.apellidos','cotizadores.cotizador')
+                    ->get();
+        $items=\DB::table('items')
+                ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')
+                ->join('productos','productos.id','=','items.id_producto')
+                ->where('items.id_cotizacion',$id_cotizacion)
+                ->select('items.*','productos.detalles')
+                ->get();
+        //dd($cotizacion);
 
     	/*$pdf = PDF::loadView('reports/pdf/advertising', array('advertising'=>$advertising));
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('advertising-'.date('d-m-Y').'.pdf');*/
-        $pdf = PDF::loadView('reportes/envio');
+        $pdf = PDF::loadView('reportes/envio', array('cotizacion'=>$cotizacion,'items' => $items));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('ReporteCotizacion-'.date('d-m-Y').'.pdf');
     }

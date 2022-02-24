@@ -5,6 +5,34 @@
     @page {
       margin: 0cm 1cm;
     }
+    .fecha{
+      font-family: sans-serif;
+      font-size: 12px;
+      margin-top: 54px;
+      color: #FFFFFF;
+      text-align: right;
+      margin-right: -20px;
+    }
+    .cotizador{
+      font-family: sans-serif;
+      font-size: 11px;
+      margin-left: 45.5px;
+      margin-top: 8.5px;
+    }
+    .solicitante{
+      font-family: sans-serif;
+      font-size: 11px;
+      margin-left: 11px;
+      margin-top: 3.5px;
+
+    }
+    .codigo{
+      font-family: sans-serif;
+      font-size: 11px;
+      margin-left: 101px;
+      margin-top: 2.5px;
+
+    }
     body{
       font-family: sans-serif;
       margin-top: 1cm;
@@ -68,7 +96,7 @@
         <?php $image_path = '/img/banner_pdf.png'; ?>
         <img src="{{ public_path() . $image_path }}" class="logo">
       </td>
-      <td align="left">
+      <!-- <td align="left">
         <b>
           Reporte de Envio <br>
           Boreal<br>
@@ -76,9 +104,21 @@
           NIT: 222222222222222<br>
           Fecha: <?php //echo date('d/m/Y g:i:s A'); ?>
         </b>
-      </td>
+      </td> -->
     </tr>
   </table>
+  <div class="fecha">
+    <b><?=$cotizacion[0]->fecha?></b> 
+  </div>
+  <div class="cotizador">
+    <b><?=$cotizacion[0]->cotizador?></b> 
+  </div>
+  <div class="solicitante">
+    <b><?=$cotizacion[0]->nombres?>&nbsp;&nbsp;<?=$cotizacion[0]->apellidos?></b> 
+  </div>
+  <div class="codigo">
+    <b><?=$cotizacion[0]->numero_oc?></b> 
+  </div>
   <footer>
     <?php $image_path2 = '/img/footer.png'; ?>
         <img src="{{ public_path() . $image_path2 }}" width="793px" height="92px" class="footer">
@@ -94,7 +134,7 @@
     <span class="page" style="float: right; color: #FFFFFF; margin-top: 78px;">Página </span>
   </footer>
   
-  <main style="margin-top: 170px !important;">
+  <main style="margin-top: 40px !important;">
     @yield('main')
   </main>
 </body>
