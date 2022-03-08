@@ -472,7 +472,8 @@ class PreCotizacionesController extends Controller
         //precio con iva
         $pp_ci=$tasa->tasa*$request->pda;
         //precio sin iva
-        $pp_si=$pp_ci/(1+($tasaiva->tasa_i/100));
+        //$pp_si=$pp_ci/(1+($tasaiva->tasa_i/100));
+        $pp_si=$request->pda;
         //traslado por unidad
         if ($request->cant==0) {
             $traslado_x_und=0;
@@ -481,11 +482,11 @@ class PreCotizacionesController extends Controller
         }
         $porc=$request->porc_uti/100;
         //precio unitario
-        $precio_unit=($pp_si*(1+$porc))+$traslado_x_und;
+        $precio_unit=$pp_si*(1+$porc);
         //total por producto
-        $total_pp=$precio_unit*$request->cant;
+        $total_pp=$precio_unit*$request->cant+$traslado_x_und;
         //uti por und
-        $uti_x_und=$precio_unit-$pp_ci;
+        $uti_x_und=$precio_unit-$pp_si;
         //uti total de items
         $uti_x_total_p=$uti_x_und*$request->cant;
         //boreal

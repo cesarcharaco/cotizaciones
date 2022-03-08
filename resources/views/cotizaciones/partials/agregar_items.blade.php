@@ -224,7 +224,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="card-body">
-                    <table id="items" class="table table-bordered table-striped table-sm table-responsive" style="font-size: 12px;">
+                    <table id="items" class="table table-bordered table-striped table-sm table-responsive" style="font-size: 12px; width: 100% !important;">
                       <thead>
                         <tr>
                           <th>Descripción</th>
@@ -236,7 +236,7 @@
                           <th>Enlace 1 <br><small>Referencia Web</small></th>
                           <th>Enlace 2 <br><small>Referencia Web</small></th>
                           <th>Observación</th>
-                          <th>Precio Peso CON/IVA</th>
+                          <!-- <th>Precio Peso CON/IVA</th> -->
                           <th>Precio Peso SIN/IVA</th>
                           <th>Precio {{$cotizacion->moneda}}</th>
                           <th>Traslado</th>
@@ -277,7 +277,7 @@
   });
 $.fn.DataTable.ext.errMode='throw';
   var id_cotizacion=$("#id_cotizacion").val();
-  
+  //{ data: 'pp_ci', name: 'pp_ci' },
   var table=$('#items').DataTable({
     processing: true,
     serverSide: true,
@@ -300,7 +300,6 @@ $.fn.DataTable.ext.errMode='throw';
       { data: 'enlace1_web', name: 'enlace1_web' },
       { data: 'enlace2_web', name: 'enlace2_web' },
       { data: 'observacion', name: 'observacion' },
-      { data: 'pp_ci', name: 'pp_ci' },
       { data: 'pp_si', name: 'pp_si' },
       { data: 'pda', name: 'pda' },
       { data: 'traslado', name: 'traslado' },
@@ -381,6 +380,7 @@ function calcular_item() {
           $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
         });
       } else {
+        
         $("#precio_unit_txt").text(result[0]);
         $("#precio_unit").val(result[0]);
         $("#total_pp_txt").text(result[1]);
