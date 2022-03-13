@@ -136,3 +136,14 @@ function codigo_en_uso()
     }
     
 }
+
+function buscar_img($id_producto)
+{
+    $buscar=App\Models\Imagenes::where('id_producto',$id_producto)->first();
+    if (!is_null($buscar)) {
+        $img=$buscar->nombre;
+    } else {
+        $img="";
+    }
+    return $img;
+}

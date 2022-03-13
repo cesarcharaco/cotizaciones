@@ -178,6 +178,7 @@ class CotizadoresController extends Controller
                 $cotizador->rut=$request->rut;
                 $cotizador->telefono=$request->telefono;
                 $cotizador->correo=$request->correo;
+                $cotizador->status=$request->status;
                 $cotizador->save();
 
                 $user = User::where('id',$cotizador->id_usuario)->first();
@@ -185,15 +186,22 @@ class CotizadoresController extends Controller
                 $user->email=$request->correo;
                 $mensaje="";
                 if(!is_null($request->reset_clave)){
-                    $a=date('Y');
+                    /*$a=date('Y');
                     $n=ucfirst(trim($request->username));
                     $clave=$n.''.$a.'.';
                     $user->password=bcrypt($clave);
-                    $mensaje=" CLAVE MODIFICADA: ".$clave;
+                    $mensaje=" CLAVE MODIFICADA: ".$clave;*/
+                    if ($request->clave_nueva==$request->clave_nueva2) {
+                        $user->password=bcrypt($request->clave_nueva);
+                        $mensaje=" CLAVE MODIFICADA";
+                    } else {
+                        $mensaje="LA CLAVE NO SE MODIFICÓ YA QUE NO COINCIDEN";
+                    }
+                    
                 }
                 $user->save();
                 
-                return response()->json(['message' => 'El cotizador actualizado con éxito.'.$mensaje."(".$request->reset_clave.")", 'icono' => 'success', 'titulo' => 'Éxito']);
+                return response()->json(['message' => 'El cotizador actualizado con éxito.'.$mensaje, 'icono' => 'success', 'titulo' => 'Éxito']);
             }
         }
     }
@@ -209,12 +217,20 @@ class CotizadoresController extends Controller
         
             $cotizador=Cotizadores::find($id);
             $user=User::where('id',$cotizador->id_usuario)->first();
-            if($cotizador->delete()){
-                $user->delete();
-              return response()->json(['message' => 'El cotizador fue eliminado con éxito','icono' => 'success', 'titulo' => 'Éxito']);
-            }else{
-                return response()->json(['message' => 'El cotizador no pudo ser eliminado','icono' => 'warning', 'titulo' => 'Alerta']);
+            $buscar=Cotizaciones::where('id_cotizador',$id)->count();
+            if ($buscar==0) {
+              if($cotizador->delete()){
+                  $user->delete();
+                return response()->json(['message' => 'El cotizador fue eliminado con éxito','icono' => 'success', 'titulo' => 'Éxito']);
+              }else{
+                  return response()->json(['message' => 'El cotizador no pudo ser eliminado','icono' => 'warning', 'titulo' => 'Alerta']);
+              }
+            } else {
+              $cotizador->status="Suspendido";
+              $cotizador->save();
+              return response()->json(['message' => 'El cotizador no pudo ser eliminado, debido a que tiene cotizaciones registradas, Se ha cambiado el status a SUSPENDIDO','icono' => 'warning', 'titulo' => 'Alerta']);
             }
+            
         
     }
 }

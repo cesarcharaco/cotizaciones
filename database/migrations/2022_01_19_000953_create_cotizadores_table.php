@@ -20,7 +20,7 @@ class CreateCotizadoresTable extends Migration
             $table->string('telefono')->nullable();
             $table->string('correo');
             $table->unsignedBigInteger('id_usuario');
-
+            $table->enum('status',['Activo','Suspendido'])->default('Activo');
             $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

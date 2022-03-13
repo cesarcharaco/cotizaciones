@@ -329,7 +329,9 @@ $.fn.DataTable.ext.errMode='throw';
               $("#id_categoria2").attr('readonly',true);
               $("#imagenes1").css('display','none');
               $("#imagenes2").css('display','block');
-              $("#imagen").attr('src',data[i].url);
+              
+              $("#imagen").attr('src','../../'+data[i].url);
+              $("#ver_imagen").attr('href','../../'+data[i].url);
               $("#obligatorio1").text('');
               $("#obligatorio2").text('');
               $("#descripcion").removeAttr('required');
@@ -462,7 +464,7 @@ $('#SubmitCargarItem').click(function(e) {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
-  console.log('...........');
+  
   $.ajax({
     url: "{{ route('items.store') }}",
     method: 'post',
@@ -489,8 +491,9 @@ $('#SubmitCargarItem').click(function(e) {
       id_cotizacion: $("#id_cotizacion").val(),
     },
     success: function(result) {
-
+      
       if(result.errors) {
+        
         $('.alert-danger').html('');
         $.each(result.errors, function(key, value) {
           $('.alert-danger').show();
@@ -516,6 +519,7 @@ $('#SubmitCargarItem').click(function(e) {
         }
       }
     }
+
   });
 });
 function editCotizacion(id_item){
@@ -659,6 +663,7 @@ $("#cargar_datosb").on('change', function (event) {
       $("#ocr_obligatoria").css('display','none');
     }
 });
+
 </script>
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 @endsection

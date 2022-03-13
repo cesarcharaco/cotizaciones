@@ -36,7 +36,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 
 	Route::post('/solicitantes/buscar_por_empresa',[SolicitantesController::class,'buscar_por_empresa'])->name('solicitantes.buscar_por_empresa');
 	Route::get('/solicitantes/{id_solicitante}/buscar',[SolicitantesController::class,'buscar_solicitante']);
-	
+	Route::resource('/productos',ProductosController::class);
 	Route::get('productos/imagenes',[ProductosController::class,'imagenes'])->name('productos.imagenes');
 	Route::post('/productos/registrar',[ProductosController::class,'registrar'])->name('productos.registrar');
 	Route::post('/productos/eliminar_imagen',[ProductosController::class,'eliminar_imagen'])->name('eliminar_imagen');
@@ -60,7 +60,7 @@ Route::group(['middleware' => ['web', 'auth']], function() {
 	Route::resource('/cotizadores',CotizadoresController::class);
 	Route::resource('/solicitantes',SolicitantesController::class);
 	Route::resource('/cotizaciones',PreCotizacionesController::class);
-	Route::resource('/productos',ProductosController::class);
+	
 	Route::resource('/categorias',CategoriasController::class);
 	Route::resource('/tasas',TasasController::class);
 	Route::resource('/tasasiva',TasaIvaController::class);

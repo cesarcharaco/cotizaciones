@@ -29,7 +29,17 @@ class ProductosController extends Controller
                     $edit = '<a href="productos/'.$row->id.'/edit" data-id="'.$row->id.'" class="btn btn-warning btn-xs" id="editProducto"><i class="fa fa-pencil-alt"></i></a>';
                     $delete = ' <a href="javascript:void(0);" id="delete-estado" onClick="deleteProducto('.$row->id.')" class="delete btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>';
                     return $edit . $delete;
-                })->rawColumns(['action'])
+                })->addColumn('imagen', function ($row) {
+                    $imagen=Imagenes::where('id_producto',$row->id)->first();
+                    if (!is_null($imagen)) {
+                        $img='
+                      <img src='.$imagen->url.' alt="Photo 1" style="width: 25%; height: 25%" >';
+                    } else {
+                        $img="No registrada";
+                    }
+                    
+                    return $img;
+                })->rawColumns(['action','imagen'])
                 ->editColumn('detalles',function($row){
                     $d=$row->detalles;
                     $ma=$row->marca;
@@ -150,9 +160,10 @@ class ProductosController extends Controller
      */
     public function show($id)
     {
-        $producto=Productos::where('id',$id)->get();
+        //$producto=Productos::where('id',$id)->get();
 
-        return $producto;
+        //return $producto;
+
     }
 
     /**
@@ -166,7 +177,7 @@ class ProductosController extends Controller
         
         $productos=Productos::where('id',$id)->first();
         $categorias=Categorias::all();
-        
+
         return view('productos.edit', compact('productos','categorias'));
     }
 
@@ -179,7 +190,8 @@ class ProductosController extends Controller
      */
     public function update(Request $request, $id_producto)
     {
-        dd($request->all());
+        
+        
         $message =[
             'detalles.required' => 'El campo detalles es obligatorio',
             'modelo.required' => 'El campo modelo es obligatorio',
@@ -200,13 +212,17 @@ class ProductosController extends Controller
 
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()->all()]);
+            //return response()->json(['errors' => $validator->errors()->all()]);
+            toastr()->warning('intente otra vez!!', $validator->errors()->all().'');
+            return redirect()->back();
         }
 
-        $buscar=Productos::where('detalles',$request->detalles)->where('marca',$request->marca)->where('modelo',$request->modelo)->where('color',$request->color)->where('id','<>',$request->id_producto)->count();
+        $buscar=Productos::where('detalles',$request->detalles)->where('marca',$request->marca)->where('modelo',$request->modelo)->where('color',$request->color)->where('id','<>',$id_producto)->count();
 
         if($buscar > 0){
-            return response()->json(['message'=>"Ya existe un producto con los mismos detalles, marca, modelo y color",'icono'=>'warning','titulo'=>'Alerta']);
+            /*return response()->json(['message'=>"Ya existe un producto con los mismos detalles, marca, modelo y color",'icono'=>'warning','titulo'=>'Alerta']);*/
+            Alert::error('Alerta', 'Ya existe un producto con los mismos detalles, marca, modelo y color')->persistent(true);
+            return redirect()->back();
         }else{
             
                 if($request->imagenes!=null){
@@ -216,7 +232,7 @@ class ProductosController extends Controller
                             return redirect()->back();
                         }  
                     }
-                    $producto= Productos::find($request->id_producto);
+                    $producto= Productos::find($id_producto);
                     $producto->detalles=$request->detalles;
                     $producto->marca=$request->marca;   
                     $producto->id_categoria=$request->id_categoria;
@@ -227,6 +243,11 @@ class ProductosController extends Controller
                     
                     if($request->imagenes!=null){
                         //cargando imagenes
+                    $img_anterior=Imagenes::where('id_producto',$id_producto)->first();
+                    if (!is_null($img_anterior)) {
+                        unlink($img_anterior->url);
+                        $img_anterior->delete();
+                    }
                     $imagenes=$request->file('imagenes');
                         //foreach($imagenes as $imagen){
                             $codigo=$this->generarCodigo();
@@ -239,12 +260,13 @@ class ProductosController extends Controller
                             $img->nombre=$name;
                             $img->url=$url;
                             $img->save();
-
                             //$producto->imagenes()->attach($img);
                         //}
 
                     }
-                     return response()->json(['message'=>"Producto ".$producto->codigo." - ".$request->detalles." actualizado con éxito",'icono'=>'success','titulo'=>'Éxito']);
+                /*return response()->json(['message'=>"Producto ".$producto->codigo." - ".$request->detalles." actualizado con éxito",'icono'=>'success','titulo'=>'Éxito']);*/
+                Alert::success('Éxito', 'Producto '.$producto->codigo.' - '.$request->detalles.' actualizado con éxito')->persistent(true);
+            return redirect()->to('/productos');
                 
             }
     }
@@ -267,16 +289,16 @@ class ProductosController extends Controller
     }
     protected function validar_imagen($imagenes)
     {
-        //dd($imagenes);
+        //dd($imagenes->getSize());
         $mensaje="";
         $valida=0;
-        foreach($imagenes as $imagen){
+        //foreach($imagenes as $imagen){
             //dd('asasas');
-            $img=getimagesize($imagen);
-            $size=$imagen->getClientSize();
+            $img=getimagesize($imagenes);
+            $size=$imagenes->getSize();
             $width=$img[0];
             $higth=$img[1];
-        }
+        //}
 
         //dd($size."-".$width."-".$higth);
 

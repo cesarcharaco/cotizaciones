@@ -62,7 +62,9 @@
             <div class="col-sm-4" id="imagenes2" style="display: none;">
               <label for="descripcion">Imagen</label>
                 <div>
-                  <img id="imagen" src="#" alt="Imagen de Producto">
+                  <a href="#" id="ver_imagen" target="_blank">
+                  <img id="imagen" src="#" alt="Imagen de Producto" style="width: 50%; height: 50%">
+                  </a>
                 </div>
             </div>
           </div>

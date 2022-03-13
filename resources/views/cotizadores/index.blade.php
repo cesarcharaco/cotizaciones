@@ -53,6 +53,7 @@
             <table id="cotizadores_table" class="table table-bordered table-striped table-sm" style="font-size: 12px;">
               <thead>
                 <tr>
+                  <th>Status</th>
                   <th>Nombres y Apellidos</th>
                   <th>RUT</th>
                   <th>Teléfono</th>
@@ -101,6 +102,7 @@ $(document).ready( function () {
       url:"{{ url('cotizadores') }}"
    },
     columns: [
+      { data: 'status', name: 'status' },
       { data: 'cotizador', name: 'cotizador' },
       { data: 'rut', name: 'rut' },
       { data: 'telefono', name: 'telefono' },
@@ -163,7 +165,7 @@ $('#SubmitCreateCotizador').click(function(e) {
 //--CODIGO PARA EDITAR AGENCIA ---------------------//
 $('body').on('click', '#editCotizador', function () {
   var id = $(this).data('id');
-  
+  $('#edit_cotizadores').trigger("reset");
   $.ajax({
     method:"GET",
     url: "cotizadores/"+id+"/edit",
@@ -185,6 +187,7 @@ $('#SubmitEditCotizador').click(function(e) {
   e.preventDefault();
   var id = $('#id_cotizador_edit').val();
   var reset;
+
   if ($("#reset_clave").is(':checked')) {
     reset=1;
   }else{
@@ -200,6 +203,9 @@ $('#SubmitEditCotizador').click(function(e) {
       telefono: $('#telefono_edit').val(),
       correo: $('#correo_edit').val(),
       username: $('#username_edit').val(),
+      status: $('#status_edit').val(),
+      clave_nueva: $('#clave').val(),
+      clave_nueva2: $('#clave2').val(),
       reset_clave: reset
     },
     success: (data) => {
@@ -253,9 +259,22 @@ function deleteCotizador(id){
         }
       });
     }
-  })
+  });
 }
- 
+
+  $("#reset_clave").on('change', function (event) {
+    if ($("#reset_clave").is(':checked')) {
+      $("#clave_nueva").css('display','block');
+      $("#clave_nueva2").css('display','block');
+      $("#clave_nueva").attr('required',true);
+      $("#clave_nueva2").attr('required',true);
+    }else{
+      $("#clave_nueva").css('display','none');
+      $("#clave_nueva2").css('display','none');
+      $("#clave_nueva").removeAttr('required');
+      $("#clave_nueva2").removeAttr('required');
+    }
+  });
 </script>
 <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
 @endsection

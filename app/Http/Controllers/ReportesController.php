@@ -31,9 +31,10 @@ class ReportesController extends Controller
         
         $cotizacion=\DB::table('cotizaciones')
                     ->join('solicitantes','solicitantes.id','=','cotizaciones.id_solicitante')
+                    ->join('empresas','empresas.id','=','solicitantes.id_empresa')
                     ->join('cotizadores','cotizadores.id','=','cotizaciones.id_cotizador')
                     ->where('cotizaciones.id','=',$id_cotizacion)
-                    ->select('cotizaciones.*','solicitantes.nombres','solicitantes.apellidos','cotizadores.cotizador')
+                    ->select('cotizaciones.*','solicitantes.nombres','solicitantes.apellidos','cotizadores.cotizador','cotizadores.telefono','empresas.nombre')
                     ->get();
         $items=\DB::table('items')
                 ->join('cotizaciones','cotizaciones.id','=','items.id_cotizacion')

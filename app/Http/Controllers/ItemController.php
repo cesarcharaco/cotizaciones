@@ -40,7 +40,6 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        
         //varificamos si seleccionó un producto del banco
         if(is_null($request->productos)){
             //si no seleccionó uno del banco
@@ -57,7 +56,7 @@ class ItemController extends Controller
             $producto->save();
             $id_producto=$producto->id;
 
-            $imagenes=$request->file('imagenes');
+            /*$imagenes=$request->file('imagenes');
 
             if (!is_null($imagenes)) {
                 //foreach($imagenes as $imagen){
@@ -71,13 +70,13 @@ class ItemController extends Controller
                     $img->url=$url;
                     $img->save();
                 //}
-            }
+            }*/
             
         }else{
             $id_producto=$request->productos;
         }
         
-       //echo '-----'.$request->id_cotizacion;
+       
         $item=new Item();
         $item->id_producto=$id_producto;
         $item->plazo_entrega=$request->plazo_entrega;
@@ -94,7 +93,7 @@ class ItemController extends Controller
         $item->porc_uti=$request->porc_uti;
         $item->uti_x_und=$request->uti_x_und;
         $item->uti_x_total_p=$request->uti_x_total_p;
-        $item->boreal=$request->boreal;
+        $item->boreal=$request->uti_x_total_p;
         $item->id_cotizacion=$request->id_cotizacion;
         $item->save();
         $items=Item::where('id_cotizacion',$request->id_cotizacion)->get();

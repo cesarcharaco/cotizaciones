@@ -57,8 +57,8 @@
                   <th>Código</th>
                   <th>Categoría</th>
                   <th>Detalles</th>
-                  <!-- <th>Marca</th>
-                  <th>Modelo</th>
+                  <th>Imagen</th>
+                  <!-- <th>Modelo</th>
                   <th>Color</th> -->
                   <th>Status</th>
                   <th>Acciones</th>
@@ -107,6 +107,7 @@ $(document).ready( function () {
       { data: 'codigo', name: 'codigo' },
       { data: 'categoria', name: 'categoria' },
       { data: 'detalles', name: 'detalles' },
+      { data: 'imagen', name: 'imagen' },
       { data: 'status', name: 'status' },
       {data: 'action', name: 'action', orderable: false},
     ],
@@ -134,39 +135,7 @@ $('body').on('click', '#editProducto', function () {
   });
 });
 //--CODIGO PARA UPDATE ESTADO ---------------------//
-$('#SubmitEditProducto').click(function(e) {
-  e.preventDefault();
-  var id = $('#id_producto_edit').val();
-  $.ajax({
-    method:'PUT',
-    url: "productos/"+id+"",
-    data: {
-      id_producto: $('#id_producto_edit').val(),
-      detalles: $('#detalles_edit').val(),
-      status: $('#status_edit').val(),
-      id_categoria: $('#id_categoria_edit').val()
-    },
-    success: (data) => {
-      if(data.errors) {
-        $('.alert-danger').html('');
-        $.each(data.errors, function(key, value) {
-          $('.alert-danger').show();
-          $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
-        });
-      } else {
-        var oTable = $('#productos_table').dataTable();
-        oTable.fnDraw(false);
-        Swal.fire ( data.titulo ,  data.message ,  data.icono );
-        if (data.icono=="success") {
-          $("#edit_productos").modal('hide');
-        }
-      }
-    },
-    error: function(data){
-      console.log(data);
-    }
-  });
-});
+
 //--CODIGO PARA ELIMINAR ESTADO ---------------------//
 function deleteProducto(id){
   var id = id;

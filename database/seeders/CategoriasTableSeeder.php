@@ -18,7 +18,8 @@ class CategoriasTableSeeder extends Seeder
         	['categoria' => 'CELULARES'],
         	['categoria' => 'TV'],
         	['categoria' => 'COMPUTADORAS'],
-        	['categoria' => 'TABLETS']
+        	['categoria' => 'TABLETS'],
+            ['categoria' => 'EQUIPOS DE CONSTRUCCION']
         ]);
     }
 }

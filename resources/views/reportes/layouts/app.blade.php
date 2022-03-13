@@ -8,30 +8,68 @@
     .fecha{
       font-family: sans-serif;
       font-size: 12px;
-      margin-top: 54px;
-      color: #FFFFFF;
+      margin-top: 8.5px;
+      color: #000000;
       text-align: right;
       margin-right: -20px;
     }
     .cotizador{
       font-family: sans-serif;
       font-size: 11px;
-      margin-left: 45.5px;
-      margin-top: 8.5px;
+      margin-left: 120px;
+      margin-top: 35px;
+      position: absolute;
+      color: #FFFFFF;
+
+    }
+    .sello{
+      margin-left: 400px;
+      margin-top: -75px;
+      position: absolute;
+
+    }
+    .firma{
+      margin-left: 600px;
+      margin-top: -120px;
+      position: absolute;
+
     }
     .solicitante{
       font-family: sans-serif;
       font-size: 11px;
       margin-left: 11px;
-      margin-top: 3.5px;
-
+      margin-top: 70px;
+      color: #36347F;
     }
     .codigo{
       font-family: sans-serif;
-      font-size: 11px;
-      margin-left: 101px;
-      margin-top: 2.5px;
+      font-size: 20px;
+      color: #FFFFFF;
+      margin-right: -20px;
+      margin-top: -30px;
+      text-align: right;
 
+    }
+    .empresa{
+      font-family: sans-serif;
+      font-size: 11px;
+      color: #000000;
+      margin-left: : 30px;
+      margin-top: 9px;
+      color: #36347F;
+
+    }
+    .info{
+      text-align: left;
+    }
+    .info2{
+      text-align: right;
+    }
+    .observaciones{
+      font-family: sans-serif;
+      font-size: 11px;
+      text-align: left;
+      margin-top: 20px;
     }
     body{
       font-family: sans-serif;
@@ -93,7 +131,7 @@
   <table width="100%">
     <tr>
       <td valign="top">
-        <?php $image_path = '/img/banner_pdf.png'; ?>
+        <?php $image_path = '/img/banner_pdf2.png'; ?>
         <img src="{{ public_path() . $image_path }}" class="logo">
       </td>
       <!-- <td align="left">
@@ -107,20 +145,39 @@
       </td> -->
     </tr>
   </table>
-  <div class="fecha">
-    <b><?=$cotizacion[0]->fecha?></b> 
+  
+  <div class="info1">
+      <div class="solicitante">
+    <b><?php echo strtoupper($cotizacion[0]->nombres." ".$cotizacion[0]->apellidos);?></b> 
   </div>
-  <div class="cotizador">
-    <b><?=$cotizacion[0]->cotizador?></b> 
+  <div class="empresa">
+    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=strtoupper($cotizacion[0]->nombre)?></b> 
+  </div>  
   </div>
-  <div class="solicitante">
-    <b><?=$cotizacion[0]->nombres?>&nbsp;&nbsp;<?=$cotizacion[0]->apellidos?></b> 
-  </div>
-  <div class="codigo">
+  <div class="info2">
+    <div class="codigo">
     <b><?=$cotizacion[0]->numero_oc?></b> 
   </div>
+  <div class="fecha">
+    <b><?=$cotizacion[0]->fecha?></b> 
+  </div>  
+  </div>
+  
+  
   <footer>
-    <?php $image_path2 = '/img/footer.png'; ?>
+    <div class="cotizador">
+    <b>Nombre del Cotizador: <?=strtoupper($cotizacion[0]->cotizador)?></b><br><br>
+    <b>Phono: <?=strtoupper($cotizacion[0]->telefono)?></b> 
+  </div>
+  <div class="sello">
+    <?php $image_sello = '/img/boreal_sello.png'; ?>
+    <img src="{{ public_path() . $image_sello }}" class="footer">
+  </div>
+  <div class="firma">
+    <?php $image_firma = '/img/boreal_firma.png'; ?>
+    <img src="{{ public_path() . $image_firma }}" class="footer">
+  </div>
+    <?php $image_path2 = '/img/footer2.png'; ?>
         <img src="{{ public_path() . $image_path2 }}" width="793px" height="92px" class="footer">
     <!-- <hr>
     <p>
@@ -137,5 +194,16 @@
   <main style="margin-top: 40px !important;">
     @yield('main')
   </main>
+  <div class="observaciones">
+    <span>Observaciones</span>
+    <ul>
+      <li>Moneda Cotizada: <?=$cotizacion[0]->moneda?></li>
+      <li>Forma de pago: Órden de compra fecha 30 días factura</li>
+      <li>Vigencia de la oferta: <b>15 días</b></li>
+      <li>Lugar de Entrega: <?=$cotizacion[0]->lugar_entrega?></li>
+      <li>Valor Cotizado es Neto, no incluye IVA</li>
+    </ul>
+  </div>
+  
 </body>
 </html>

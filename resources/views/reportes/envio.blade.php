@@ -1,9 +1,9 @@
 @extends('reportes.layouts.app')
 @section('title')
-  <title>Reporte de Medios publicitarios</title>
+  <title>Reporte de Solicitud de Cotización</title>
 @endsection
 @section('title-report')
-  @php echo 'Medios publicitarios registrados' @endphp
+  @php echo 'Cotización registrada' @endphp
 @endsection
 
 @section('main')
@@ -25,13 +25,22 @@
   		<tr style=" font-size: 8; ">
   			<td style="background-color: #DADADA;">{{$i++}}</td>
   			<td align="justify">{{$key->detalles}}</td>
-  			<td style="background-color: #DADADA"></td>
+  			<td style="background-color: #DADADA">
+          @if(buscar_img($key->id)!="")
+          @php $url="/img_productos/".buscar_img($key->id); @endphp
+          <?php $x=public_path() . '/img_productos/26341713_reloj.jpg'; ?>
+          <img src="{{public_path() . $url}}" style="width: 50px; height: 50px;">
+          
+          @else
+            No Encontrada
+          @endif
+          </td>
   			<td>{{$key->plazo_entrega}}</td>
   			<td style="background-color: #DADADA">{{$key->cant}}</td>
   			<td>{{$key->precio_unit}}</td>
   			<td style="background-color: #DADADA">{{$key->total_pp}}</td>
   		</tr>
-  	@endforeach
+  	@endforeach 3133928
   </tbody>
   </table>
 @endsection

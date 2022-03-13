@@ -28,7 +28,20 @@ class ProductosTableSeeder extends Seeder
         	'modelo' => 'TB3',
         	'color' => 'GRIS',
         	'id_categoria' => 5,
-        	'status' => 'Activo']
+        	'status' => 'Activo'],
+
+            ['codigo' => '20210727CONST45',
+            'detalles' => 'PALA CABO MADERA',
+            'marca' => 'TOR',
+            'modelo' => 'TB3',
+            'color' => 'MARRON',
+            'id_categoria' => 6,
+            'status' => 'Activo']
+        ]);
+        \DB::table('imagenes')->insert([
+            ['id_producto' => 3, 'nombre' => '2302428_pala.jpg','url' => 'img_productos/2302428_pala.jpg'],
+            ['id_producto' => 2, 'nombre' => '121414_tablet.jpg','url' => 'img_productos/121414_tablet.jpg'],
+            ['id_producto' => 1, 'nombre' => '26341713_reloj.jpg','url' => 'img_productos/26341713_reloj.jpg']
         ]);
 
         

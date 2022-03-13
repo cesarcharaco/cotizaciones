@@ -26,14 +26,14 @@
       <div class="col-md-12">
         <!-- Horizontal Form -->
         <div class="card card-primary card-outline">
-          <form action="" class="form-horizontal" method="PUT" autocomplete="off" enctype="Multipart/form-data">
+          <form action="{{ route('productos.update',$productos->id) }}" class="form-horizontal" method="POST" autocomplete="off" enctype="Multipart/form-data">
             @method('PUT')
             @csrf
             <div class="card-header">
               <h3 class="card-title" style="margin-top: 5px;"><i class="nav-icon fa fa-shopping-basket"></i> Editar producto: <span id="codigo_edit">{{ $productos->codigo }}</span></h3>
               <div class="float-right">
                 <a href="{{ route('productos.index') }}" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Regresar</a>                
-                <button type="submit" class="btn btn-primary btn-sm" id="SubmitCreateProducto"><i class="fa fa-save"></i> Guardar registro</button>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Editar registro</button>
               </div>
             </div>
             <!-- /.card-header -->
@@ -117,10 +117,10 @@
               
               <div class="row">
                 <div class="col-sm-12">
-                  <label for="imagenes1" >Imágenes <b style="color: red;">*</b></label>
+                  <label for="imagenes1" >Imágenes @if(is_null($productos->imagenes)) <b style="color: red;">*</b>@endif</label>
                   <div class="input-group">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="imagenes" name="imagenes" accept="image/jpeg,image/jpg,image/png">
+                      <input type="file" class="custom-file-input" id="imagenes" name="imagenes" accept="image/jpeg,image/jpg,image/png" @if(is_null($productos->imagenes)) required="required" @endif >
                       <label class="custom-file-label" for="imagenes">Seleccionar archivo...</label>
                     </div>
                   </div>
@@ -128,10 +128,11 @@
               </div>
               
               <div class="row">
-                @foreach($productos->imagenes as $k)
+              @if(!is_null($productos->imagenes))
+                
                   <div class="col-md-4">
                     <div class="position-relative">
-                      <img src="{{ asset($k->url)}}" alt="Photo 1" class="img-fluid">
+                      <img src="{{ asset($productos->imagenes->url)}}" alt="Photo 1" class="img-fluid">
                       <div class="ribbon-wrapper ribbon-lg">
                         <div class="ribbon bg-success text-lg">
                           IMAGEN
@@ -139,7 +140,8 @@
                       </div>
                     </div>
                   </div>
-                @endforeach
+                
+                @endif
               </div>
             </div>
             <!-- /.card-body -->
@@ -156,44 +158,7 @@
 <script type="text/javascript">
 //--CODIGO PARA EDITAR ESTADO ---------------------//
 //--CODIGO PARA UPDATE ESTADO ---------------------//
-$('#SubmitEditProducto').click(function(e) {
-  e.preventDefault();
-  var id = $('#id_producto_edit').val();
-  $.ajax({
-    method:'PUT',
-    url: "productos/"+id+"",
-    data: {
-      id_producto: $('#id_producto_edit').val(),
-      detalles: $('#detalles_edit').val(),
-      status: $('#status_edit').val(),
-      marca: $('#marca_edit').val(),
-      modelo: $('#modelo_edit').val(),
-      color: $('#color_edit').val(),
-      stock_s: $('#stock_s_edit').val(),
-      stock_min_s: $('#stock_min_s_edit').val(),
-      
-    },
-    success: (data) => {
-      if(data.errors) {
-        $('.alert-danger').html('');
-        $.each(data.errors, function(key, value) {
-          $('.alert-danger').show();
-          $('.alert-danger').append('<strong><li>'+value+'</li></strong>');
-        });
-      } else {
-        var oTable = $('#productos_table').dataTable();
-        oTable.fnDraw(false);
-        Swal.fire ( data.titulo ,  data.message ,  data.icono );
-        if (data.icono=="success") {
-          $("#edit_productos").modal('hide');
-        }
-      }
-    },
-    error: function(data){
-      console.log(data);
-    }
-  });
-});
+
 //--CODIGO PARA CREAR CATEGORIAS (LEVANTAR EL MODAL) ---------------------//
 $('#createNewCategoria').click(function () {
   $('#categoriaForm').trigger("reset");
